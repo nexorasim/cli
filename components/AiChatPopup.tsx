@@ -18,9 +18,9 @@ const parseSimpleMarkdown = (text: string): string => {
                 const innerHtml = content
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                     .replace(/\*(.*?)\*/g, '<em>$1</em>');
-                return `<li class="ml-2">${innerHtml}</li>`;
+                return `<li>${innerHtml}</li>`;
             }).join('');
-            return `<ul class="list-disc list-inside space-y-1 my-2">${listItems}</ul>`;
+            return `<ul class="list-disc list-inside space-y-1 my-2 ml-4">${listItems}</ul>`;
         } else {
             return part
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -41,7 +41,7 @@ const MessageContent: React.FC<{ text: string; onLinkClick: () => void }> = ({ t
             const to = parts[index + 1];
             return (
                 <div className="mt-3" key={index}>
-                    <Link to={to} onClick={onLinkClick} className="inline-flex items-center px-4 py-2 bg-cyan-500 text-slate-900 font-medium rounded-lg hover:bg-cyan-400 transition-colors text-sm">
+                    <Link to={to} onClick={onLinkClick} className="inline-flex items-center px-3 py-1.5 bg-cyan-500 text-slate-900 font-medium rounded-lg hover:bg-cyan-400 transition-colors text-sm">
                         {label}
                     </Link>
                 </div>
@@ -67,8 +67,8 @@ const SendIcon = () => (
 );
 
 const UserAvatar = () => (
-    <div className="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center flex-shrink-0 text-white">
-        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+        <svg className="h-4 w-4 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
         </svg>
     </div>
@@ -76,7 +76,9 @@ const UserAvatar = () => (
 
 const AiAvatar = () => (
     <div className="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
-        <NexoraLogo className="w-full h-full object-cover" />
+        <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9l-5.91 5.74L17.18 22 12 19.27 6.82 22l1.09-7.26L2 9l6.91-.74L12 2z"/>
+        </svg>
     </div>
 );
 
@@ -89,9 +91,10 @@ const TypingIndicator: React.FC = () => (
 );
 
 interface Message {
-  id: string; 
-  sender: 'user' | 'ai'; 
-  text: string;
+    id: string; 
+    sender: 'user' | 'ai'; 
+    text: string;
+    timestamp: string;
 }
 
 interface AiChatPopupProps { 
@@ -104,33 +107,38 @@ const AiChatPopup: React.FC<AiChatPopupProps> = ({ isOpen, setIsOpen }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [sessionId] = useState(`session-${Date.now()}`);
     const chatInstance = useRef<Chat | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const suggestions = [
-        t('ai_chat_suggestion_1'), 
-        t('ai_chat_suggestion_2'), 
-        t('ai_chat_suggestion_3'), 
-        t('ai_chat_suggestion_4')
-    ].filter(s => s);
-    
-    const ai = useRef<GoogleGenAI | null>(null);
+        "How do I activate my eSIM?",
+        "What are your data plans?", 
+        "Is my phone compatible?",
+        "How to contact support?"
+    ];
 
     useEffect(() => {
         if (isOpen && !chatInstance.current) {
             try {
-                ai.current = new GoogleGenAI({ apiKey: process.env.API_KEY });
+                const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
                 const faqs = getFaqs(t);
                 const faqContext = faqs.map(faq => `Q: ${faq.q}\nA: ${faq.a}`).join('\n\n');
 
-                const systemInstruction = `You are an AI assistant for eSIM Myanmar. Answer questions about eSIM services in ${locale === 'en' ? 'English' : 'Burmese'}. Use the following FAQ as reference:
+                const systemInstruction = `You are an AI assistant for eSIM Myanmar. Answer questions about eSIM services in ${locale === 'en' ? 'English' : 'Burmese'}. 
 
+FAQ Reference:
 ${faqContext}
 
-Keep responses concise and helpful. For purchase inquiries, use: [View eSIM Plans](/buy-esim)`;
+Guidelines:
+- Keep responses concise and helpful
+- For purchase inquiries, direct to: [View eSIM Plans](/buy-esim)
+- For technical support, recommend contacting support
+- Use friendly, professional tone
+- Focus on eSIM and Myanmar travel topics`;
                 
-                chatInstance.current = ai.current.chats.create({
+                chatInstance.current = ai.chats.create({
                     model: 'gemini-2.5-flash',
                     config: { systemInstruction }
                 });
@@ -138,14 +146,16 @@ Keep responses concise and helpful. For purchase inquiries, use: [View eSIM Plan
                 setMessages([{ 
                     id: 'greeting', 
                     sender: 'ai', 
-                    text: t('ai_chat_greeting') 
+                    text: "Hello! I'm your eSIM Myanmar AI assistant. How can I help you today?",
+                    timestamp: new Date().toISOString()
                 }]);
             } catch (error) {
                 console.error("Failed to initialize AI Chat:", error);
                 setMessages([{ 
                     id: 'error', 
                     sender: 'ai', 
-                    text: "Sorry, I'm having trouble connecting right now." 
+                    text: "Sorry, I'm having trouble connecting right now. Please try again later.",
+                    timestamp: new Date().toISOString()
                 }]);
             }
         } else if (!isOpen) {
@@ -158,7 +168,11 @@ Keep responses concise and helpful. For purchase inquiries, use: [View eSIM Plan
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages, isLoading]);
 
-    const addMessage = (msg: Message) => setMessages(prev => [...prev, msg]);
+    const addMessage = (msg: Omit<Message, 'timestamp'>) => {
+        const messageWithTimestamp = { ...msg, timestamp: new Date().toISOString() };
+        setMessages(prev => [...prev, messageWithTimestamp]);
+    };
+
     const updateMessage = (id: string, text: string) => setMessages(prev => 
         prev.map(msg => msg.id === id ? { ...msg, text } : msg)
     );
@@ -188,7 +202,7 @@ Keep responses concise and helpful. For purchase inquiries, use: [View eSIM Plan
 
         } catch (error) {
             console.error("AI Chat send error:", error);
-            updateMessage(aiMessageId, t('ai_chat_error'));
+            updateMessage(aiMessageId, "I'm sorry, I encountered an error. Please try again or contact our support team.");
         } finally {
             setIsLoading(false);
             setTimeout(() => textareaRef.current?.focus(), 100);
@@ -213,26 +227,28 @@ Keep responses concise and helpful. For purchase inquiries, use: [View eSIM Plan
             
             {/* Modal */}
             <div className="relative z-10 flex items-center justify-center min-h-full p-4">
-                <div className={`w-full max-w-md bg-white rounded-2xl shadow-2xl transform transition-all duration-300 ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+                <div className={`w-full max-w-lg bg-white rounded-2xl shadow-2xl transform transition-all duration-300 overflow-hidden ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+                    
                     {/* Header */}
-                    <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                    <div className="flex items-center justify-between p-6 bg-gray-50 border-b border-gray-200">
                         <div className="flex items-center gap-3">
                             <AiAvatar />
                             <div>
                                 <h3 className="font-semibold text-gray-900">Ask AI Assistant</h3>
-                                <p className="text-xs text-gray-500">Powered by Nexora AI+</p>
+                                <p className="text-xs text-gray-500">eSIM Myanmar Support</p>
                             </div>
                         </div>
                         <button 
                             onClick={() => setIsOpen(false)} 
-                            className="p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors"
+                            className="p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors"
+                            aria-label="Close chat"
                         >
                             <CloseIcon />
                         </button>
                     </div>
 
                     {/* Messages */}
-                    <div className="h-96 overflow-y-auto p-4 space-y-4">
+                    <div className="h-96 overflow-y-auto p-4 space-y-4 bg-white">
                         {messages.map((msg) => (
                             <div key={msg.id} className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 {msg.sender === 'ai' && <AiAvatar />}
@@ -253,21 +269,22 @@ Keep responses concise and helpful. For purchase inquiries, use: [View eSIM Plan
                         <div ref={messagesEndRef} />
                     </div>
 
-                    {/* Input */}
-                    <div className="p-4 border-t border-gray-200">
+                    {/* Input Area */}
+                    <div className="p-4 bg-gray-50 border-t border-gray-200">
                         {messages.length <= 1 && (
                             <div className="grid grid-cols-1 gap-2 mb-4">
-                                {suggestions.slice(0, 2).map((s, i) => (
+                                {suggestions.slice(0, 4).map((suggestion, i) => (
                                     <button 
                                         key={i} 
-                                        onClick={() => sendMessage(s)} 
-                                        className="text-xs text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-gray-700"
+                                        onClick={() => sendMessage(suggestion)} 
+                                        className="text-xs text-left px-3 py-2 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors text-gray-700"
                                     >
-                                        {s}
+                                        {suggestion}
                                     </button>
                                 ))}
                             </div>
                         )}
+                        
                         <div className="flex gap-2">
                             <textarea
                                 ref={textareaRef}
@@ -278,17 +295,21 @@ Keep responses concise and helpful. For purchase inquiries, use: [View eSIM Plan
                                 rows={1}
                                 className="flex-1 resize-none border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                 disabled={isLoading}
-                                style={{minHeight: '36px', maxHeight: '100px'}}
+                                style={{minHeight: '40px', maxHeight: '100px'}}
                             />
                             <button
                                 onClick={handleSend}
                                 disabled={!input.trim() || isLoading}
-                                className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                                className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+                                aria-label="Send message"
                             >
                                 <SendIcon />
                             </button>
                         </div>
-                        <p className="text-xs text-gray-500 mt-2 text-center">AI can make mistakes. Verify important information.</p>
+                        
+                        <p className="text-xs text-gray-500 mt-2 text-center">
+                            AI responses may contain errors. Verify important information.
+                        </p>
                     </div>
                 </div>
             </div>

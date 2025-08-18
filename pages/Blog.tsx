@@ -1,140 +1,155 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import GlassCard from '../components/GlassCard';
-import { GoogleGenAI, Type } from '@google/genai';
 import { usePageMetadata } from '../hooks/usePageMetadata';
-import { safeJsonParse } from '../lib/utils';
+import blogPosts, { BlogPost } from '../data/blog';
+import { Link } from 'react-router-dom';
 
-const SpinnerIcon = () => (
-    <svg className="animate-spin h-12 w-12 text-secondary mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>
-);
+const CategoryBadge: React.FC<{ category: BlogPost['category'] }> = ({ category }) => {
+    const colors = {
+        'Travel': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+        'Technology': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+        'News': 'bg-green-500/20 text-green-300 border-green-500/30',
+        'Tips': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+    };
+    
+    return (
+        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${colors[category]}`}>
+            {category}
+        </span>
+    );
+};
 
-interface BlogPost {
-    title: string;
-    summary: string;
-    author: string;
-    date: string;
-}
+const BlogCard: React.FC<{ post: BlogPost; index: number }> = ({ post, index }) => {
+    const { t } = useI18n();
+    
+    return (
+        <div className="blog-card group">
+            <GlassCard className="h-full flex flex-col hover:border-cyan-400/30 transition-all duration-300 group-hover:scale-[1.02]">
+                <div className="flex items-center justify-between mb-4">
+                    <CategoryBadge category={post.category} />
+                    <span className="text-xs text-gray-400">{post.readTime} min read</span>
+                </div>
+                
+                <h2 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">
+                    {post.title}
+                </h2>
+                
+                <p className="text-gray-300 text-sm leading-relaxed mb-4 flex-grow">
+                    {post.summary}
+                </p>
+                
+                <div className="flex flex-wrap gap-1 mb-4">
+                    {post.tags.slice(0, 3).map(tag => (
+                        <span key={tag} className="px-2 py-1 bg-slate-700/50 text-xs text-gray-400 rounded">
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+                
+                <div className="border-t border-white/10 pt-4 mt-auto">
+                    <div className="flex justify-between items-center text-xs text-gray-400 mb-3">
+                        <span>By {post.author}</span>
+                        <span>{post.date}</span>
+                    </div>
+                    <button className="w-full px-4 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-500 rounded-lg transition-all duration-300 font-medium">
+                        Read Full Article
+                    </button>
+                </div>
+            </GlassCard>
+        </div>
+    );
+};
 
 const Blog: React.FC = () => {
     const { t, locale } = useI18n();
     usePageMetadata('page_title_blog', 'page_description_blog');
-    const [posts, setPosts] = useState<BlogPost[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<string>('All');
+    const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(blogPosts);
     const contentRef = useRef<HTMLDivElement>(null);
 
+    const categories = ['All', 'Travel', 'Technology', 'News', 'Tips'];
+
     useEffect(() => {
-        const generateBlogPosts = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-                const prompt = `Generate 6 blog post ideas for an eSIM company in Myanmar called "eSIM Myanmar". The posts should be relevant to tourists and locals. Topics can include travel tips for Myanmar, benefits of eSIM technology, local tech news, and comparisons. For each post, provide a catchy title, a short summary (2-3 sentences), a fictional author name, and a recent publication date.`;
-                
-                const response = await ai.models.generateContent({
-                    model: 'gemini-2.5-flash',
-                    contents: prompt,
-                    config: {
-                        responseMimeType: "application/json",
-                        responseSchema: {
-                            type: Type.OBJECT,
-                            properties: {
-                                posts: {
-                                    type: Type.ARRAY,
-                                    description: "An array of 6 blog post objects.",
-                                    items: {
-                                        type: Type.OBJECT,
-                                        properties: {
-                                            title: { type: Type.STRING, description: "The catchy title of the blog post." },
-                                            summary: { type: Type.STRING, description: "A short summary of the post (2-3 sentences)." },
-                                            author: { type: Type.STRING, description: "A fictional author's name (e.g., a Burmese or English name)." },
-                                            date: { type: Type.STRING, description: "A recent, realistic publication date (e.g., 'August 5, 2024')." }
-                                        },
-                                        required: ["title", "summary", "author", "date"]
-                                    }
-                                }
-                            },
-                            required: ["posts"]
-                        }
-                    }
-                });
-
-                const [parseError, jsonResponse] = safeJsonParse(response.text.trim());
-
-                if(parseError) {
-                    console.error("Blog post parse error:", parseError);
-                    throw new Error("Failed to parse blog posts from AI.");
-                }
-
-                if (jsonResponse.posts && Array.isArray(jsonResponse.posts)) {
-                    setPosts(jsonResponse.posts);
-                } else {
-                    throw new Error("Invalid response format from AI.");
-                }
-            } catch (err) {
-                console.error("Failed to generate blog posts:", err);
-                setError(t('blog_error'));
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        generateBlogPosts();
-    }, [t]);
+        if (selectedCategory === 'All') {
+            setFilteredPosts(blogPosts);
+        } else {
+            setFilteredPosts(blogPosts.filter(post => post.category === selectedCategory));
+        }
+    }, [selectedCategory]);
     
     useEffect(() => {
-        if (!isLoading && contentRef.current) {
+        if (contentRef.current) {
             const { gsap } = window as any;
             if (gsap) {
-                 gsap.fromTo(
+                gsap.fromTo(
                     contentRef.current.querySelectorAll('.blog-card'),
                     { opacity: 0, y: 30, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }
                 );
             }
         }
-    }, [isLoading, posts]);
+    }, [filteredPosts]);
 
     return (
-        <div ref={contentRef} className={`max-w-5xl mx-auto ${locale === 'my' ? 'font-myanmar' : ''}`}>
-            <div className="text-center mb-12">
-                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">{t('blog_title')}</h1>
-                <p className="text-lg text-gray-300 max-w-3xl mx-auto">{t('blog_subtitle')}</p>
+        <div ref={contentRef} className={`max-w-7xl mx-auto ${locale === 'my' ? 'font-myanmar' : ''}`}>
+            {/* Header */}
+            <div className="text-center mb-16">
+                <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Our Blog</h1>
+                <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+                    Latest news, travel tips, and tech insights from the eSIM Myanmar team
+                </p>
             </div>
 
-            {isLoading && (
-                <div className="flex flex-col items-center justify-center min-h-[40vh]">
-                    <SpinnerIcon />
-                    <p className="mt-4 text-lg text-gray-300">{t('blog_loading')}</p>
+            {/* Category Filter */}
+            <div className="flex flex-wrap justify-center gap-2 mb-12">
+                {categories.map(category => (
+                    <button
+                        key={category}
+                        onClick={() => setSelectedCategory(category)}
+                        className={`px-4 py-2 rounded-full font-medium transition-all duration-300 ${
+                            selectedCategory === category
+                                ? 'bg-cyan-500 text-slate-900'
+                                : 'bg-slate-700/50 text-gray-300 hover:bg-slate-600 hover:text-white'
+                        }`}
+                    >
+                        {category}
+                    </button>
+                ))}
+            </div>
+
+            {/* Blog Posts Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredPosts.map((post, index) => (
+                    <BlogCard key={post.id} post={post} index={index} />
+                ))}
+            </div>
+
+            {filteredPosts.length === 0 && (
+                <div className="text-center py-16">
+                    <p className="text-gray-400 text-lg">No posts found in this category.</p>
                 </div>
             )}
 
-            {error && (
-                <GlassCard className="border-status-red/50 bg-status-red/10 text-center">
-                    <p className="text-red-300">{error}</p>
+            {/* Newsletter Signup */}
+            <div className="mt-20">
+                <GlassCard className="text-center max-w-2xl mx-auto">
+                    <h3 className="text-2xl font-bold text-white mb-4">Stay Updated</h3>
+                    <p className="text-gray-300 mb-6">
+                        Get the latest updates on eSIM technology and travel tips delivered to your inbox.
+                    </p>
+                    <div className="flex gap-3">
+                        <input 
+                            type="email" 
+                            placeholder="Enter your email address"
+                            className="flex-1 bg-slate-800/50 text-white placeholder-gray-400 border border-gray-600 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        />
+                        <button className="px-6 py-3 bg-cyan-500 text-slate-900 font-semibold rounded-lg hover:bg-cyan-400 transition-colors">
+                            Subscribe
+                        </button>
+                    </div>
                 </GlassCard>
-            )}
-
-            {!isLoading && !error && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {posts.map((post, index) => (
-                        <div key={index} className="blog-card h-full">
-                            <GlassCard className="flex flex-col h-full">
-                                <h2 className="text-xl font-bold text-secondary mb-2 flex-grow">{post.title}</h2>
-                                <p className="text-gray-300 text-sm leading-relaxed mb-4">{post.summary}</p>
-                                <div className="border-t border-white/10 pt-3 mt-auto text-xs text-gray-400 flex justify-between items-center">
-                                    <span>{t('blog_author')}: {post.author}</span>
-                                    <span>{post.date}</span>
-                                </div>
-                            </GlassCard>
-                        </div>
-                    ))}
-                </div>
-            )}
+            </div>
         </div>
     );
 };
