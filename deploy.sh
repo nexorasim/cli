@@ -18,25 +18,9 @@ npm ci
 echo "Building application..."
 npm run build
 
-# Copy static files to dist
-if [ -f "sitemap.xml" ]; then
-    cp sitemap.xml dist/
-fi
+# Copy built files to public directory (preserving existing static files)
+echo "Copying built files to public directory..."
+cp dist/index.html public/
+cp -r dist/assets public/
 
-if [ -f "robots.txt" ]; then
-    cp robots.txt dist/
-fi
-
-if [ -f "atom.xml" ]; then
-    cp atom.xml dist/
-fi
-
-if [ -f "rss.xml" ]; then
-    cp rss.xml dist/
-fi
-
-if [ -d "feeds" ]; then
-    cp -r feeds dist/
-fi
-
-echo "Deployment preparation completed!"
+echo "Deployment preparation completed for public/ directory"
