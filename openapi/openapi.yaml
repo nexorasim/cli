@@ -1,0 +1,200 @@
+openapi: 3.0.3
+info:
+  title: eSIM Myanmar API Documentation
+  description: |
+    API documentation for eSIM Myanmar frontend application.
+    This documents the client-side routes and components structure.
+  version: 1.0.0
+  contact:
+    name: eSIM Myanmar Support
+    email: info@esim.com.mm
+    url: https://esim.com.mm/contact
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://esim.com.mm
+    description: Production server
+  - url: http://localhost:5173
+    description: Development server
+
+# Frontend route documentation
+paths:
+  /:
+    get:
+      summary: Home page
+      description: Main landing page with hero section and features
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: Home page rendered successfully
+          content:
+            text/html:
+              schema:
+                type: string
+                
+  /buy-esim:
+    get:
+      summary: Buy eSIM page
+      description: eSIM purchase and activation page
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: eSIM details page rendered successfully
+          
+  /about:
+    get:
+      summary: About page
+      description: Company information and mission
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: About page rendered successfully
+          
+  /compatibility:
+    get:
+      summary: Device compatibility page
+      description: Check device compatibility with eSIM
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: Compatibility page rendered successfully
+          
+  /how-it-works:
+    get:
+      summary: How it works page
+      description: Step-by-step guide on eSIM activation
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: How it works page rendered successfully
+          
+  /what-is-esim:
+    get:
+      summary: What is eSIM page
+      description: Educational content about eSIM technology
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: What is eSIM page rendered successfully
+          
+  /help-center:
+    get:
+      summary: Help center page
+      description: Customer support and FAQ
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: Help center page rendered successfully
+          
+  /contact:
+    get:
+      summary: Contact page
+      description: Contact information and form
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: Contact page rendered successfully
+          
+  /partners:
+    get:
+      summary: Partners page
+      description: Business partners and integrations
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: Partners page rendered successfully
+          
+  /blog:
+    get:
+      summary: Blog page
+      description: Blog posts and articles
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: Blog page rendered successfully
+
+  /privacy-policy:
+    get:
+      summary: Privacy policy page
+      description: Privacy policy and data protection information
+      tags:
+        - Legal
+      responses:
+        '200':
+          description: Privacy policy page rendered successfully
+          
+  /terms-of-service:
+    get:
+      summary: Terms of service page
+      description: Terms and conditions for service usage
+      tags:
+        - Legal
+      responses:
+        '200':
+          description: Terms of service page rendered successfully
+          
+  /refund-policy:
+    get:
+      summary: Refund policy page
+      description: Refund and cancellation policy
+      tags:
+        - Legal
+      responses:
+        '200':
+          description: Refund policy page rendered successfully
+
+# Component schemas
+components:
+  schemas:
+    BrandInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "eSIM Myanmar"
+        domain:
+          type: string
+          example: "esim.com.mm"
+        email:
+          type: string
+          format: email
+          example: "info@esim.com.mm"
+        phone:
+          type: string
+          example: "09 6500 00172"
+        social:
+          type: object
+          properties:
+            facebook:
+              type: string
+              format: uri
+            viber:
+              type: string
+              format: uri
+            telegram:
+              type: string
+              format: uri
+            youtube:
+              type: string
+              format: uri
+            tiktok:
+              type: string
+              format: uri
+
+tags:
+  - name: Pages
+    description: Website pages and routes
+  - name: Legal
+    description: Legal pages and policies
