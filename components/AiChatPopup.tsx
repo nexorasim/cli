@@ -12,17 +12,16 @@ const parseSimpleMarkdown = (text: string): string => {
     const parts = html.split(listRegex);
 
     return parts.map((part, index) => {
-        if (index % 2 === 1) { // It's a list match from the regex
+        if (index % 2 === 1) {
             const listItems = part.trim().split('\n').map(item => {
                 const content = item.replace(/^\s*[\*-]\s+/, '');
-                // Handle bold and italic within list items
                 const innerHtml = content
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                     .replace(/\*(.*?)\*/g, '<em>$1</em>');
                 return `<li class="ml-2">${innerHtml}</li>`;
             }).join('');
             return `<ul class="list-disc list-inside space-y-1 my-2">${listItems}</ul>`;
-        } else { // It's a non-list part
+        } else {
             return part
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -31,10 +30,8 @@ const parseSimpleMarkdown = (text: string): string => {
     }).join('');
 };
 
-
 const MessageContent: React.FC<{ text: string; onLinkClick: () => void }> = ({ text, onLinkClick }) => {
     const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-
     const parts = text.split(linkRegex);
     const content = parts.map((part, index) => {
         if (index % 3 === 0) {
@@ -44,7 +41,7 @@ const MessageContent: React.FC<{ text: string; onLinkClick: () => void }> = ({ t
             const to = parts[index + 1];
             return (
                 <div className="mt-3" key={index}>
-                    <Link to={to} onClick={onLinkClick} className="btn-primary !py-2 !px-4 !text-sm">
+                    <Link to={to} onClick={onLinkClick} className="inline-flex items-center px-4 py-2 bg-cyan-500 text-slate-900 font-medium rounded-lg hover:bg-cyan-400 transition-colors text-sm">
                         {label}
                     </Link>
                 </div>
@@ -57,40 +54,51 @@ const MessageContent: React.FC<{ text: string; onLinkClick: () => void }> = ({ t
 };
 
 // UI Icons
-const CloseIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>);
-const SendIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>);
-const ThumbsUpIcon: React.FC<{ filled?: boolean }> = ({ filled }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill={filled ? 'currentColor' : 'none'} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.562 8H12V4a2 2 0 00-2-2l-1.5 2.5" />
+const CloseIcon = () => (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
     </svg>
 );
-const ThumbsDownIcon: React.FC<{ filled?: boolean }> = ({ filled }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill={filled ? 'currentColor' : 'none'} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.106-1.79l-.05-.025A4 4 0 0011.057 2H5.642a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.438 12H8v4a2 2 0 002 2l1.5-2.5" />
+
+const SendIcon = () => (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
     </svg>
 );
+
+const UserAvatar = () => (
+    <div className="w-8 h-8 rounded-full bg-slate-600 flex items-center justify-center flex-shrink-0 text-white">
+        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+    </div>
+);
+
 const AiAvatar = () => (
-    <div className="w-8 h-8 rounded-full bg-primary flex-shrink-0 ring-1 ring-secondary/30 shadow-lg overflow-hidden">
+    <div className="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
         <NexoraLogo className="w-full h-full object-cover" />
     </div>
 );
-const UserAvatar = () => (<div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 text-gray-400 ring-1 ring-white/20"><svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>);
+
 const TypingIndicator: React.FC = () => (
-    <div className="flex items-center gap-1.5 py-2 px-1">
-        <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse-fast [animation-delay:-0.3s]"></span>
-        <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse-fast [animation-delay:-0.15s]"></span>
-        <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse-fast"></span>
+    <div className="flex items-center gap-1 py-2">
+        <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse"></span>
+        <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></span>
+        <span className="h-2 w-2 bg-gray-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></span>
     </div>
 );
 
-// Types
 interface Message {
-  id: string; sender: 'user' | 'ai'; text: string;
-  feedbackState?: 'pending' | 'good' | 'bad';
+  id: string; 
+  sender: 'user' | 'ai'; 
+  text: string;
 }
 
-// Main Component
-interface AiChatPopupProps { isOpen: boolean; setIsOpen: (isOpen: boolean) => void; }
+interface AiChatPopupProps { 
+    isOpen: boolean; 
+    setIsOpen: (isOpen: boolean) => void; 
+}
+
 const AiChatPopup: React.FC<AiChatPopupProps> = ({ isOpen, setIsOpen }) => {
     const { t, locale } = useI18n();
     const [messages, setMessages] = useState<Message[]>([]);
@@ -100,44 +108,45 @@ const AiChatPopup: React.FC<AiChatPopupProps> = ({ isOpen, setIsOpen }) => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    const suggestions = [t('ai_chat_suggestion_1'), t('ai_chat_suggestion_2'), t('ai_chat_suggestion_3'), t('ai_chat_suggestion_4')].filter(s => s);
+    const suggestions = [
+        t('ai_chat_suggestion_1'), 
+        t('ai_chat_suggestion_2'), 
+        t('ai_chat_suggestion_3'), 
+        t('ai_chat_suggestion_4')
+    ].filter(s => s);
+    
     const ai = useRef<GoogleGenAI | null>(null);
 
-    // Initialization
     useEffect(() => {
         if (isOpen && !chatInstance.current) {
             try {
                 ai.current = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
                 const faqs = getFaqs(t);
-                const faqContext = faqs.map(faq => `Question: ${faq.q}\nAnswer: ${faq.a}`).join('\n\n---\n');
+                const faqContext = faqs.map(faq => `Q: ${faq.q}\nA: ${faq.a}`).join('\n\n');
 
-                const systemInstruction = `You are Nexora AI+, an advanced eSIM AI Agent for eSIM Myanmar (${BRAND_INFO.domain}), integrated with Google Cloud and the Gemini API Gateway. Your purpose is to provide excellent, accurate customer support and facilitate eSIM sales.
+                const systemInstruction = `You are an AI assistant for eSIM Myanmar. Answer questions about eSIM services in ${locale === 'en' ? 'English' : 'Burmese'}. Use the following FAQ as reference:
 
-**CORE DIRECTIVES:**
-1.  **Language Mastery:** Your entire response MUST be in the user's language, which is currently **${locale === 'en' ? 'English' : 'Burmese'}**. You must be able to switch languages seamlessly if the user does.
-2.  **Scope of Knowledge:** Your expertise is strictly limited to eSIMs, Myanmar travel, our company's services, our blog content, and our operational partners. For any out-of-scope questions, politely state you cannot assist and refocus on our services.
-3.  **Primary Knowledge Source:** The following FAQ is your primary source of truth. Base your answers on this information.
-    <KNOWLEDGE_BASE>
-    ${faqContext}
-    </KNOWLEDGE_BASE>
-4.  **Tone & Formatting:** Be friendly, helpful, and concise. Use markdown for emphasis (e.g., **bold text** or *italic text*) and lists to improve readability.
-5.  **Website Navigation:** Guide users to relevant pages using markdown links: \`[link text](/path)\`. Available paths: / (Home), /buy-esim, /compatibility, /how-it-works, /help-center, /blog.
-6.  **Sales Facilitation:** If a user expresses intent to buy or view plans, your response MUST be exactly: "${t('ai_chat_purchase_redirect')} [${t('ai_chat_purchase_redirect_cta')}](/buy-esim)". This is a critical function.
-7.  **Compatibility-to-Sales Flow:** After confirming a device's compatibility, ALWAYS follow up by asking if they want to see plans, e.g., "Yes, that device is compatible. [Would you like to see our eSIM plans?](/buy-esim)".
-8.  **Troubleshooting:** For issues like "payment failed" or "my eSIM isn't working", be empathetic. Ask for their Order Number to understand the situation, then reassure them you're there to help and guide them to our dedicated support channels like Viber for resolution of specific account issues.
-`;
+${faqContext}
+
+Keep responses concise and helpful. For purchase inquiries, use: [View eSIM Plans](/buy-esim)`;
                 
                 chatInstance.current = ai.current.chats.create({
                     model: 'gemini-2.5-flash',
-                    config: {
-                        systemInstruction: systemInstruction,
-                    }
+                    config: { systemInstruction }
                 });
-                setMessages([{ id: 'greeting', sender: 'ai', text: t('ai_chat_greeting') }]);
+                
+                setMessages([{ 
+                    id: 'greeting', 
+                    sender: 'ai', 
+                    text: t('ai_chat_greeting') 
+                }]);
             } catch (error) {
                 console.error("Failed to initialize AI Chat:", error);
-                setMessages([{ id: 'error', sender: 'ai', text: "Sorry, I'm having trouble connecting right now." }]);
+                setMessages([{ 
+                    id: 'error', 
+                    sender: 'ai', 
+                    text: "Sorry, I'm having trouble connecting right now." 
+                }]);
             }
         } else if (!isOpen) {
             setMessages([]);
@@ -145,17 +154,14 @@ const AiChatPopup: React.FC<AiChatPopupProps> = ({ isOpen, setIsOpen }) => {
         }
     }, [isOpen, locale, t]);
 
-    useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isLoading]);
     useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
-            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 144)}px`;
-        }
-    }, [input]);
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, isLoading]);
 
     const addMessage = (msg: Message) => setMessages(prev => [...prev, msg]);
-    const updateMessage = (id: string, newProps: Partial<Message>) => setMessages(prev => prev.map(msg => msg.id === id ? { ...msg, ...newProps } : msg));
-
+    const updateMessage = (id: string, text: string) => setMessages(prev => 
+        prev.map(msg => msg.id === id ? { ...msg, text } : msg)
+    );
 
     const sendMessage = async (messageText: string) => {
         if (!messageText.trim() || isLoading) return;
@@ -170,20 +176,19 @@ const AiChatPopup: React.FC<AiChatPopupProps> = ({ isOpen, setIsOpen }) => {
         try {
             if (!chatInstance.current) throw new Error("Chat not initialized");
             
-            addMessage({ id: aiMessageId, sender: 'ai', text: '' }); // Add empty AI message bubble
+            addMessage({ id: aiMessageId, sender: 'ai', text: '' });
 
             const stream = await chatInstance.current.sendMessageStream({ message: text });
             
             let fullResponse = '';
             for await (const chunk of stream) {
                 fullResponse += chunk.text;
-                updateMessage(aiMessageId, { text: fullResponse });
+                updateMessage(aiMessageId, fullResponse);
             }
-            updateMessage(aiMessageId, { text: fullResponse, feedbackState: 'pending' });
 
         } catch (error) {
             console.error("AI Chat send error:", error);
-            updateMessage(aiMessageId, { text: t('ai_chat_error'), feedbackState: 'pending' });
+            updateMessage(aiMessageId, t('ai_chat_error'));
         } finally {
             setIsLoading(false);
             setTimeout(() => textareaRef.current?.focus(), 100);
@@ -191,96 +196,101 @@ const AiChatPopup: React.FC<AiChatPopupProps> = ({ isOpen, setIsOpen }) => {
     };
 
     const handleSend = () => sendMessage(input);
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } };
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSend();
+        }
+    };
     
     return (
-        <div className={`fixed inset-0 z-[60] bg-primary/70 backdrop-blur-md transition-opacity duration-300 flex items-center justify-center p-0 sm:p-4 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={(e) => { if (e.target === e.currentTarget) setIsOpen(false); }} aria-modal="true" role="dialog">
-            <style>{`.animate-typing-indicator { animation: typing-indicator 1.5s ease-in-out infinite; } @keyframes typing-indicator { 0% { transform: translateX(-50%); } 100% { transform: translateX(300%); } }`}</style>
-            <div onClick={(e) => e.stopPropagation()} className={`flex flex-col w-full max-w-2xl h-full sm:h-[90vh] sm:max-h-[700px] glass-card !bg-primary/95 !border-secondary/20 !rounded-none sm:!rounded-2xl shadow-2xl shadow-black/40 overflow-hidden transition-all duration-300 ease-out ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-                <header className="flex items-center justify-between p-4 border-b border-secondary/20 flex-shrink-0">
-                    <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-primary flex-shrink-0 ring-2 ring-secondary/30 shadow-lg overflow-hidden">
-                            <NexoraLogo className="w-full h-full object-cover" />
-                        </div>
-                        <div>
-                            <h3 className="font-bold text-white text-xl">{t('ai_chat_title')}</h3>
-                            <p className="text-xs text-secondary/70">{t('ai_chat_powered_by')}</p>
-                        </div>
-                    </div>
-                    <button onClick={() => setIsOpen(false)} aria-label={t('ai_chat_close')} className="p-2 text-gray-300 hover:text-white rounded-full hover:bg-white/10 transition-colors"><CloseIcon/></button>
-                </header>
-
-                <div className="flex-grow p-4 space-y-5 overflow-y-auto" aria-live="polite">
-                    {messages.map((msg) => (
-                        <div key={msg.id} className={`flex items-end gap-3 animate-fadeInUp ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            {msg.sender === 'ai' && <AiAvatar />}
-                            <div className={`max-w-[85%] sm:max-w-[75%] shadow-md text-base leading-relaxed ${msg.sender === 'user' ? 'bg-gradient-to-br from-secondary/80 to-secondary text-primary font-medium rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-lg px-4 py-3' : 'glass-card !bg-primary/70 !p-3 !rounded-tr-2xl !rounded-tl-lg !rounded-br-2xl !rounded-bl-2xl'}`}>
-                                {!msg.text && isLoading ? (
-                                    <TypingIndicator />
-                                ) : (
-                                    <div className={`prose prose-sm max-w-none prose-p:my-1 ${msg.sender === 'ai' ? 'prose-invert' : ''}`}>
-                                        <MessageContent text={msg.text} onLinkClick={() => setIsOpen(false)} />
-                                    </div>
-                                )}
-                                {msg.sender === 'ai' && msg.feedbackState && msg.text && (
-                                    <div className="mt-3 pt-2 border-t border-white/20">
-                                        {msg.feedbackState === 'pending' ? (
-                                            <div className="flex justify-between items-center">
-                                                <span className="text-xs text-gray-400">{t('ai_chat_feedback_prompt')}</span>
-                                                <div className="flex items-center gap-2">
-                                                    <button onClick={() => updateMessage(msg.id, { feedbackState: 'good' })} className="p-1 rounded-full text-gray-400 hover:bg-green-500/20 hover:text-green-500 transition-colors" aria-label="Good response"><ThumbsUpIcon /></button>
-                                                    <button onClick={() => updateMessage(msg.id, { feedbackState: 'bad' })} className="p-1 rounded-full text-gray-400 hover:bg-red-500/20 hover:text-red-500 transition-colors" aria-label="Bad response"><ThumbsDownIcon /></button>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <p className="text-xs text-gray-400 italic flex items-center gap-2">
-                                                {msg.feedbackState === 'good' ? <ThumbsUpIcon filled /> : <ThumbsDownIcon filled />}
-                                                <span>{msg.feedbackState === 'good' ? t('ai_chat_feedback_thanks_good') : t('ai_chat_feedback_thanks_bad')}</span>
-                                            </p>
-                                        )}
-                                    </div>
-                                )}
+        <div className={`fixed inset-0 z-50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            {/* Backdrop */}
+            <div 
+                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                onClick={() => setIsOpen(false)}
+            />
+            
+            {/* Modal */}
+            <div className="relative z-10 flex items-center justify-center min-h-full p-4">
+                <div className={`w-full max-w-md bg-white rounded-2xl shadow-2xl transform transition-all duration-300 ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+                    {/* Header */}
+                    <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                        <div className="flex items-center gap-3">
+                            <AiAvatar />
+                            <div>
+                                <h3 className="font-semibold text-gray-900">Ask AI Assistant</h3>
+                                <p className="text-xs text-gray-500">Powered by Nexora AI+</p>
                             </div>
-                            {msg.sender === 'user' && <UserAvatar />}
                         </div>
-                    ))}
-                    <div ref={messagesEndRef} />
-                </div>
-
-                <footer className="p-4 border-t border-secondary/20 flex-shrink-0">
-                    {messages.length <= 1 && (
-                        <div className="grid grid-cols-2 gap-2 mb-3">
-                            {suggestions.slice(0, 4).map((s, i) => (
-                                <button key={i} onClick={() => sendMessage(s)} className="btn-chat text-sm text-left justify-start">
-                                    {s}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                    <div className="relative flex items-center">
-                        <label htmlFor="ai-chat-input" className="sr-only">{t('ai_chat_placeholder')}</label>
-                        <textarea
-                            id="ai-chat-input"
-                            ref={textareaRef}
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            placeholder={t('ai_chat_placeholder')}
-                            rows={1}
-                            className="w-full resize-none bg-primary/80 border border-white/20 rounded-2xl py-3 pl-4 pr-12 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary/80 focus:border-secondary transition-all"
-                            disabled={isLoading}
-                        />
-                        <button
-                            onClick={handleSend}
-                            disabled={!input.trim() || isLoading}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-secondary text-primary disabled:bg-secondary/40 disabled:cursor-not-allowed transition-all transform hover:scale-110 active:scale-100"
-                            aria-label="Send message"
+                        <button 
+                            onClick={() => setIsOpen(false)} 
+                            className="p-1 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors"
                         >
-                            <SendIcon />
+                            <CloseIcon />
                         </button>
                     </div>
-                    <p className="text-xs text-center text-gray-500 mt-2 px-4">{t('ai_chat_disclaimer')}</p>
-                </footer>
+
+                    {/* Messages */}
+                    <div className="h-96 overflow-y-auto p-4 space-y-4">
+                        {messages.map((msg) => (
+                            <div key={msg.id} className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                {msg.sender === 'ai' && <AiAvatar />}
+                                <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${
+                                    msg.sender === 'user' 
+                                        ? 'bg-cyan-500 text-white rounded-br-md' 
+                                        : 'bg-gray-100 text-gray-800 rounded-bl-md'
+                                }`}>
+                                    {!msg.text && isLoading ? (
+                                        <TypingIndicator />
+                                    ) : (
+                                        <MessageContent text={msg.text} onLinkClick={() => setIsOpen(false)} />
+                                    )}
+                                </div>
+                                {msg.sender === 'user' && <UserAvatar />}
+                            </div>
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    {/* Input */}
+                    <div className="p-4 border-t border-gray-200">
+                        {messages.length <= 1 && (
+                            <div className="grid grid-cols-1 gap-2 mb-4">
+                                {suggestions.slice(0, 2).map((s, i) => (
+                                    <button 
+                                        key={i} 
+                                        onClick={() => sendMessage(s)} 
+                                        className="text-xs text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-gray-700"
+                                    >
+                                        {s}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                        <div className="flex gap-2">
+                            <textarea
+                                ref={textareaRef}
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                placeholder="Ask about eSIMs or our services..."
+                                rows={1}
+                                className="flex-1 resize-none border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                                disabled={isLoading}
+                                style={{minHeight: '36px', maxHeight: '100px'}}
+                            />
+                            <button
+                                onClick={handleSend}
+                                disabled={!input.trim() || isLoading}
+                                className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                            >
+                                <SendIcon />
+                            </button>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2 text-center">AI can make mistakes. Verify important information.</p>
+                    </div>
+                </div>
             </div>
         </div>
     );

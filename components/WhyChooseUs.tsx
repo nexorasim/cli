@@ -1,153 +1,123 @@
 import React, { useEffect, useRef } from 'react';
 import { useI18n } from '../hooks/useI18n';
 import GlassCard from './GlassCard';
-import {
-    ConnectivityIcon,
-    DualSimIcon,
-    PaymentIcon,
-    PerformanceIcon,
-    SecurityIcon,
-    SupportIcon
-} from './SocialIcons';
 
-const Feature: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({ icon, title, description }) => {
-    const iconContainerRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLHeadingElement>(null);
-    
+const FeatureIcon: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => (
+    <div className={`w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 ${className}`}>
+        {children}
+    </div>
+);
+
+const WhyChooseUs: React.FC = () => {
+    const { t, locale } = useI18n();
+    const sectionRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         const { gsap } = window as any;
-        if (!gsap || !gsap.plugins || !gsap.plugins.scrollTrigger || !gsap.plugins.text || !titleRef.current) return;
-
-        const titleEl = titleRef.current;
-        const originalText = titleEl.textContent || '';
-        gsap.set(titleEl, { text: '' });
-
-        gsap.ScrollTrigger.create({
-            trigger: titleEl,
-            start: 'top 85%',
-            onEnter: () => gsap.to(titleEl, {
-                text: { value: originalText, padSpace: true },
-                duration: originalText.length * 0.04,
-                ease: 'none',
-            }),
-            once: true,
-        });
+        if (gsap && sectionRef.current) {
+            const cards = sectionRef.current.querySelectorAll('.feature-card');
+            gsap.fromTo(cards, 
+                { opacity: 0, y: 30 },
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.6, 
+                    stagger: 0.1, 
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        }
     }, []);
-
-
-    const handleMouseEnter = () => {
-        const { gsap } = window as any;
-        if (gsap && iconContainerRef.current) {
-            gsap.to(iconContainerRef.current, { y: -8, scale: 1.05, duration: 0.3, ease: 'back.out(1.7)' });
-        }
-    };
-
-    const handleMouseLeave = () => {
-        const { gsap } = window as any;
-        if (gsap && iconContainerRef.current) {
-            gsap.to(iconContainerRef.current, { y: 0, scale: 1, duration: 0.3, ease: 'power2.out' });
-        }
-    };
-
-    return (
-        <GlassCard 
-            className="text-left !p-8 h-full" 
-            onMouseEnter={handleMouseEnter} 
-            onMouseLeave={handleMouseLeave}
-        >
-            <div ref={iconContainerRef} className="w-12 h-12 mb-5 flex items-center justify-center glass-card !rounded-full !p-0 !bg-secondary/10 !border-secondary/20">
-                <div className="text-secondary">{icon}</div>
-            </div>
-            <h3 ref={titleRef} className="text-xl font-bold text-white mb-2">{title}</h3>
-            <p className="text-gray-300 text-sm leading-relaxed">{description}</p>
-        </GlassCard>
-    );
-};
-
-const WhyChooseUs = () => {
-    const { t, locale } = useI18n();
-    const sectionRef = useRef<HTMLElement>(null);
 
     const features = [
         {
-            icon: <ConnectivityIcon />,
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            ),
             title: t('home_feature_connectivity_title'),
-            description: t('home_feature_connectivity_desc'),
+            description: t('home_feature_connectivity_desc')
         },
         {
-            icon: <DualSimIcon />,
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+            ),
             title: t('home_feature_numbers_title'),
-            description: t('home_feature_numbers_desc'),
+            description: t('home_feature_numbers_desc')
         },
         {
-            icon: <PaymentIcon />,
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+            ),
             title: t('home_feature_payment_title'),
-            description: t('home_feature_payment_desc'),
+            description: t('home_feature_payment_desc')
         },
         {
-            icon: <PerformanceIcon />,
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+            ),
             title: t('home_feature_performance_title'),
-            description: t('home_feature_performance_desc'),
+            description: t('home_feature_performance_desc')
         },
         {
-            icon: <SecurityIcon />,
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            ),
             title: t('home_feature_security_title'),
-            description: t('home_feature_security_desc'),
+            description: t('home_feature_security_desc')
         },
         {
-            icon: <SupportIcon />,
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+            ),
             title: t('home_feature_support_title'),
-            description: t('home_feature_support_desc'),
-        },
+            description: t('home_feature_support_desc')
+        }
     ];
 
-    useEffect(() => {
-        const { gsap } = window as any;
-        if (!gsap || !gsap.plugins || !gsap.plugins.scrollTrigger || !gsap.plugins.text || !sectionRef.current) return;
-        
-        const titleElements = sectionRef.current.querySelectorAll('.section-title');
-        const gridElements = sectionRef.current.querySelectorAll('.feature-card');
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top 80%',
-                toggleActions: 'play none none reset'
-            }
-        });
-
-        const mainTitle = titleElements[0];
-        const subTitle = titleElements[1];
-
-        if(mainTitle && subTitle) {
-            const originalTitleText = mainTitle.textContent;
-            mainTitle.textContent = '';
-            tl.fromTo(subTitle, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-            tl.to(mainTitle, { text: originalTitleText, duration: originalTitleText.length * 0.04, ease: 'none'}, 0);
-        }
-        
-        tl.fromTo(gridElements,
-            { opacity: 0, y: 30, scale: 0.95 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' },
-            "-=0.5"
-        );
-        
-    }, [t]);
-
     return (
-        <section ref={sectionRef} className={`py-20 sm:py-24 ${locale === 'my' ? 'font-myanmar' : ''}`}>
+        <div ref={sectionRef} className={`${locale === 'my' ? 'font-myanmar' : ''}`}>
             <div className="text-center mb-16">
-                <h2 className="section-title text-4xl font-extrabold text-white mb-4">{t('home_why_choose_title')}</h2>
-                <p className="section-title mt-4 max-w-3xl mx-auto text-lg text-gray-300 leading-relaxed">{t('home_why_choose_subtitle')}</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                    {t('home_why_choose_title')}
+                </h2>
+                <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+                    {t('home_why_choose_subtitle')}
+                </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {features.map((feature, index) => (
-                    <div className="feature-card" key={index}>
-                      <Feature {...feature} />
-                    </div>
+                    <GlassCard key={index} className="feature-card hover:border-cyan-400/30 transition-all duration-300 group">
+                        <FeatureIcon className="mb-6 group-hover:scale-110 transition-transform duration-300">
+                            {feature.icon}
+                        </FeatureIcon>
+                        <h3 className="text-xl font-semibold text-white mb-4">
+                            {feature.title}
+                        </h3>
+                        <p className="text-gray-300 leading-relaxed">
+                            {feature.description}
+                        </p>
+                    </GlassCard>
                 ))}
             </div>
-        </section>
+        </div>
     );
 };
 

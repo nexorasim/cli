@@ -49,40 +49,48 @@ const Home: React.FC = () => {
   }, [t]);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center">
-      <div ref={heroRef} className="relative flex flex-col items-center justify-center min-h-[calc(100vh-14rem)] w-full">
-         <div className="absolute inset-0 z-0 flex items-center justify-center opacity-70">
-            <div className="w-full h-full max-w-[800px] max-h-[800px]">
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative min-h-[80vh] flex items-center justify-center">
+        <div className="absolute inset-0 z-0 flex items-center justify-center opacity-20">
+            <div className="w-full h-full max-w-[600px] max-h-[600px]">
                  <Globe />
             </div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center p-4" style={{textShadow: '0px 2px 20px rgba(10, 15, 26, 0.9)'}}>
-            <h2 className={`hero-tagline text-gray-300 text-base font-medium tracking-widest uppercase ${locale === 'my' ? 'font-myanmar' : ''}`}>
+        <div ref={heroRef} className="relative z-10 text-center max-w-4xl mx-auto px-4">
+            <h2 className={`hero-tagline text-cyan-400 text-sm font-medium tracking-widest uppercase mb-4 ${locale === 'my' ? 'font-myanmar' : ''}`}>
                 {t('home_hero_tagline')}
             </h2>
-            <h1 className={`hero-title text-5xl md:text-7xl font-extrabold tracking-tight text-white mt-4 ${locale === 'my' ? 'font-myanmar' : 'font-sans'}`}>
-              {/* Populated by GSAP */}
+            <h1 className={`hero-title text-4xl md:text-6xl font-bold text-white mb-6 leading-tight ${locale === 'my' ? 'font-myanmar' : ''}`}>
+                {/* Populated by GSAP */}
             </h1>
-            <p className={`hero-subtitle mt-6 max-w-3xl text-lg md:text-xl text-gray-300 leading-relaxed ${locale === 'my' ? 'font-myanmar' : ''}`}>
-              {/* Populated by GSAP */}
+            <p className={`hero-subtitle text-lg md:text-xl text-gray-300 mb-4 max-w-3xl mx-auto leading-relaxed ${locale === 'my' ? 'font-myanmar' : ''}`}>
+                {/* Populated by GSAP */}
             </p>
-             <p className={`hero-partners mt-2 max-w-2xl text-sm text-gray-500 ${locale === 'my' ? 'font-myanmar' : ''}`}>
-              {t('home_hero_partners')}
+            <p className={`hero-partners text-sm text-gray-400 mb-8 ${locale === 'my' ? 'font-myanmar' : ''}`}>
+                {t('home_hero_partners')}
             </p>
-            <div className="hero-cta mt-10">
-              <Link 
-                to="/buy-esim"
-                className={`btn-primary ${locale === 'my' ? 'font-myanmar' : ''}`}
-              >
-                {t('home_hero_cta')}
-              </Link>
+            <div className="hero-cta">
+                <Link 
+                    to="/buy-esim"
+                    className={`inline-flex items-center px-8 py-4 bg-cyan-500 text-slate-900 font-semibold rounded-xl hover:bg-cyan-400 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-cyan-500/25 ${locale === 'my' ? 'font-myanmar' : ''}`}
+                >
+                    {t('home_hero_cta')}
+                    <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </Link>
             </div>
         </div>
-      </div>
-      <div className="w-full max-w-7xl mx-auto pt-16 sm:pt-24">
-        <WhyChooseUs />
-      </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4">
+            <WhyChooseUs />
+        </div>
+      </section>
     </div>
   );
 };

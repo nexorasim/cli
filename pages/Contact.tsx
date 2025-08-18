@@ -44,16 +44,9 @@ const Contact: React.FC = () => {
         
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const prompt = `A user of eSIM Myanmar has a support request. Analyze their query and provide a structured JSON response to guide them to the best support channel.
-            User Query: "${query}"
+            const prompt = `Analyze this support request for eSIM Myanmar: "${query}"
             
-            Based on the query, determine the category, recommended action, and best contact method.
-            - For urgent technical issues (e.g., "eSIM not working", "no internet"), recommend Viber.
-            - For payment/billing issues, recommend Email.
-            - For general questions about how eSIMs work or compatibility, recommend the Help Center/FAQ.
-            - For sales questions, guide them to the Buy eSIM page.
-            - Provide a friendly response_message and a pre-filled email_subject.
-            `;
+            Provide structured guidance in JSON format.`;
 
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
@@ -65,26 +58,15 @@ const Contact: React.FC = () => {
                         properties: {
                             category: {
                                 type: Type.STRING,
-                                enum: ['Technical Support', 'Billing Inquiry', 'Sales Question', 'General Feedback', 'Other'],
-                                description: "The category of the user's request."
+                                enum: ['Technical Support', 'Billing Inquiry', 'Sales Question', 'General Feedback', 'Other']
                             },
-                            recommended_action: {
-                                type: Type.STRING,
-                                description: "A brief, one-sentence summary of the recommended action for the user."
-                            },
+                            recommended_action: { type: Type.STRING },
                             contact_method: {
                                 type: Type.STRING,
-                                enum: ['Viber', 'Email', 'FAQ', 'None'],
-                                description: "The best contact method. Use 'FAQ' for general questions."
+                                enum: ['Viber', 'Email', 'FAQ', 'None']
                             },
-                            response_message: {
-                                type: Type.STRING,
-                                description: "A friendly, helpful message to show the user based on their query."
-                            },
-                            email_subject: {
-                                type: Type.STRING,
-                                description: "A pre-filled subject line for an email, related to the user's query."
-                            }
+                            response_message: { type: Type.STRING },
+                            email_subject: { type: Type.STRING }
                         },
                         required: ['category', 'recommended_action', 'contact_method', 'response_message', 'email_subject']
                     }
@@ -93,7 +75,6 @@ const Contact: React.FC = () => {
 
             const [parseError, jsonResponse] = safeJsonParse(response.text.trim());
             if (parseError) {
-                console.error("AI Analysis Parse Error:", parseError);
                 throw new Error("Failed to parse AI response.");
             }
             setAnalysisResult(jsonResponse);
@@ -115,80 +96,91 @@ const Contact: React.FC = () => {
     const renderResult = () => {
         if (!analysisResult) return null;
         
-        const emailBody = `Hello eSIM Myanmar team,\n\nI have a question regarding: ${analysisResult.category}\n\nMy issue is:\n${query}\n\nThank you.`;
+        const emailBody = `Hello eSIM Myanmar team,\n\nCategory: ${analysisResult.category}\nIssue: ${query}\n\nThank you.`;
         const mailtoLink = `mailto:${BRAND_INFO.email}?subject=${encodeURIComponent(analysisResult.email_subject)}&body=${encodeURIComponent(emailBody)}`;
 
         return (
-            <div className="space-y-6 mt-6 animate-fadeInUp">
-                <div className="p-4 bg-primary/50 rounded-lg border border-secondary/20">
-                    <h4 className="font-semibold text-secondary">{t('contact_ai_result_title')}</h4>
-                    <p className="text-gray-300 mt-1">{analysisResult.response_message}</p>
+            <div className="space-y-6 mt-6">
+                <div className="p-4 bg-cyan-50 border border-cyan-200 rounded-lg">
+                    <h4 className="font-semibold text-cyan-900 mb-2">{t('contact_ai_result_title')}</h4>
+                    <p className="text-gray-700">{analysisResult.response_message}</p>
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                    <div className="bg-primary/50 p-3 rounded-lg">
-                        <p className="text-gray-400 font-semibold">{t('contact_ai_request_category')}</p>
-                        <p className="text-white font-bold">{analysisResult.category}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                        <p className="text-gray-600 font-medium">{t('contact_ai_request_category')}</p>
+                        <p className="text-gray-900 font-semibold">{analysisResult.category}</p>
                     </div>
-                     <div className="bg-primary/50 p-3 rounded-lg">
-                        <p className="text-gray-400 font-semibold">{t('contact_ai_recommendation')}</p>
-                        <p className="text-white font-bold">{analysisResult.recommended_action}</p>
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                        <p className="text-gray-600 font-medium">{t('contact_ai_recommendation')}</p>
+                        <p className="text-gray-900 font-semibold">{analysisResult.recommended_action}</p>
                     </div>
                 </div>
 
-                <div className="space-y-3 pt-4">
+                <div className="space-y-3">
                     {analysisResult.contact_method === 'Viber' && (
-                        <a href={BRAND_INFO.social.viber} target="_blank" rel="noopener noreferrer" className="btn-primary w-full !bg-purple-600 hover:!shadow-purple-500/40">
-                           <ViberIcon /> {t('contact_ai_viber_cta')}
+                        <a href={BRAND_INFO.social.viber} target="_blank" rel="noopener noreferrer" 
+                           className="w-full inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors">
+                           <ViberIcon className="mr-2" /> {t('contact_ai_viber_cta')}
                         </a>
                     )}
                     {analysisResult.contact_method === 'Email' && (
-                        <a href={mailtoLink} className="btn-primary w-full">
-                           <EmailIcon className="w-5 h-5 mr-2" /> {t('contact_ai_email_cta')}
+                        <a href={mailtoLink} 
+                           className="w-full inline-flex items-center justify-center px-6 py-3 bg-cyan-500 text-white font-medium rounded-lg hover:bg-cyan-600 transition-colors">
+                           <EmailIcon className="w-4 h-4 mr-2" /> {t('contact_ai_email_cta')}
                         </a>
                     )}
                 </div>
-                 <button onClick={handleReset} className="text-secondary text-sm hover:underline w-full mt-4">{t('esim_try_again')}</button>
+                <button onClick={handleReset} className="text-cyan-600 text-sm hover:underline w-full mt-4">
+                    {t('esim_try_again')}
+                </button>
             </div>
-        )
+        );
     };
     
     const socialLinks = [
-        { href: BRAND_INFO.social.facebook, label: t('footer_social_facebook'), icon: <FacebookIcon /> },
-        { href: BRAND_INFO.social.viber, label: t('footer_social_viber'), icon: <ViberIcon /> },
-        { href: BRAND_INFO.social.telegram, label: t('footer_social_telegram'), icon: <TelegramIcon /> },
-        { href: BRAND_INFO.social.youtube, label: t('footer_social_youtube'), icon: <YouTubeIcon /> },
-        { href: BRAND_INFO.social.tiktok, label: t('footer_social_tiktok'), icon: <TikTokIcon /> },
+        { href: BRAND_INFO.social.facebook, label: "Facebook", icon: <FacebookIcon /> },
+        { href: BRAND_INFO.social.viber, label: "Viber", icon: <ViberIcon /> },
+        { href: BRAND_INFO.social.telegram, label: "Telegram", icon: <TelegramIcon /> },
+        { href: BRAND_INFO.social.youtube, label: "YouTube", icon: <YouTubeIcon /> },
+        { href: BRAND_INFO.social.tiktok, label: "TikTok", icon: <TikTokIcon /> },
     ];
     
     return (
         <div ref={contentRef} className={`max-w-6xl mx-auto ${locale === 'my' ? 'font-myanmar' : ''}`}>
-            <div className="text-center mb-12 animate-section">
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{t('contact_title')}</h1>
-                <p className="text-lg text-gray-300 max-w-3xl mx-auto">{t('contact_subtitle')}</p>
+            {/* Header */}
+            <div className="text-center mb-16 animate-section">
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">{t('contact_title')}</h1>
+                <p className="text-xl text-gray-300 max-w-3xl mx-auto">{t('contact_subtitle')}</p>
             </div>
             
-            <div className="grid lg:grid-cols-5 gap-12">
-                <div className="lg:col-span-2 space-y-8 animate-section">
-                    <GlassCard>
-                         <h2 className="text-2xl font-bold text-secondary mb-4">{t('contact_direct_info')}</h2>
-                         <div className="space-y-4">
-                            <a href={`mailto:${BRAND_INFO.email}`} className="flex items-center text-base group">
-                                <EmailIcon />
-                                <span className="ml-4 text-white group-hover:text-secondary transition-colors">{BRAND_INFO.email}</span>
+            <div className="grid lg:grid-cols-2 gap-12">
+                {/* Contact Information */}
+                <div className="space-y-8 animate-section">
+                    <GlassCard className="hover:border-cyan-400/30 transition-all duration-300">
+                         <h2 className="text-2xl font-bold text-white mb-6">{t('contact_direct_info')}</h2>
+                         <div className="space-y-6">
+                            <a href={`mailto:${BRAND_INFO.email}`} className="flex items-center text-lg group">
+                                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mr-4">
+                                    <EmailIcon />
+                                </div>
+                                <span className="text-white group-hover:text-cyan-400 transition-colors">{BRAND_INFO.email}</span>
                             </a>
-                            <a href={`tel:${BRAND_INFO.phone.replace(/\s/g, '')}`} className="flex items-center text-base group">
-                                <PhoneIcon />
-                                <span className="ml-4 text-white group-hover:text-secondary transition-colors">{BRAND_INFO.phone}</span>
+                            <a href={`tel:${BRAND_INFO.phone.replace(/\s/g, '')}`} className="flex items-center text-lg group">
+                                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mr-4">
+                                    <PhoneIcon />
+                                </div>
+                                <span className="text-white group-hover:text-cyan-400 transition-colors">{BRAND_INFO.phone}</span>
                             </a>
                         </div>
                     </GlassCard>
-                     <GlassCard>
-                         <h2 className="text-2xl font-bold text-secondary mb-4">Follow & Chat</h2>
-                         <div className="flex flex-wrap gap-3">
+                    
+                    <GlassCard className="hover:border-cyan-400/30 transition-all duration-300">
+                         <h2 className="text-2xl font-bold text-white mb-6">Social Media</h2>
+                         <div className="grid grid-cols-5 gap-4">
                               {socialLinks.map(link => (
-                                <a key={link.href} href={link.href} target="_blank" rel="noreferrer" className="glass-card !rounded-full w-10 h-10 flex items-center justify-center text-gray-400 hover:text-secondary hover:!border-secondary/30 transition-all duration-300 transform hover:scale-110">
-                                    <span className="sr-only">{link.label}</span>
+                                <a key={link.href} href={link.href} target="_blank" rel="noreferrer" 
+                                   className="w-12 h-12 rounded-xl bg-slate-700/50 border border-gray-600 hover:border-cyan-400 flex items-center justify-center text-gray-400 hover:text-cyan-400 transition-all duration-300 hover:scale-110">
                                     {link.icon}
                                 </a>
                               ))}
@@ -196,36 +188,37 @@ const Contact: React.FC = () => {
                     </GlassCard>
                 </div>
                 
-                <div className="lg:col-span-3 animate-section">
-                    <GlassCard>
-                        <h2 className="text-2xl font-bold text-white mb-2">{t('contact_ai_assistant_title')}</h2>
-                        <p className="text-gray-400 mb-6">{t('contact_ai_assistant_subtitle')}</p>
+                {/* AI Assistant */}
+                <div className="animate-section">
+                    <GlassCard className="hover:border-cyan-400/30 transition-all duration-300">
+                        <h2 className="text-2xl font-bold text-white mb-4">{t('contact_ai_assistant_title')}</h2>
+                        <p className="text-gray-300 mb-6">{t('contact_ai_assistant_subtitle')}</p>
 
                         {!analysisResult ? (
                             <div className="space-y-4">
-                                <div>
-                                    <label htmlFor="support-query" className="sr-only">{t('contact_ai_prompt_placeholder')}</label>
-                                    <textarea 
-                                        id="support-query"
-                                        rows={5}
-                                        value={query}
-                                        onChange={e => setQuery(e.target.value)}
-                                        placeholder={t('contact_ai_prompt_placeholder')}
-                                        className="w-full bg-white/10 text-white placeholder-gray-400 border rounded-lg py-3 px-4 focus:outline-none focus:ring-2 border-white/20 focus:ring-secondary transition-all"
-                                        disabled={isAnalyzing}
-                                    />
-                                </div>
-                                <button onClick={handleAnalyze} disabled={isAnalyzing || !query.trim()} className="btn-primary w-full">
+                                <textarea 
+                                    rows={4}
+                                    value={query}
+                                    onChange={e => setQuery(e.target.value)}
+                                    placeholder={t('contact_ai_prompt_placeholder')}
+                                    className="w-full bg-slate-800/50 text-white placeholder-gray-400 border border-gray-600 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                                    disabled={isAnalyzing}
+                                />
+                                <button 
+                                    onClick={handleAnalyze} 
+                                    disabled={isAnalyzing || !query.trim()} 
+                                    className="w-full px-6 py-3 bg-cyan-500 text-slate-900 font-semibold rounded-lg hover:bg-cyan-400 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+                                >
                                     {isAnalyzing ? (
-                                        <>
-                                            <SpinnerIcon className="-ml-1 mr-3 h-5 w-5 text-primary" />
+                                        <div className="flex items-center justify-center">
+                                            <SpinnerIcon className="mr-2 h-4 w-4" />
                                             <span>{t('contact_ai_analyzing')}</span>
-                                        </>
+                                        </div>
                                     ) : (
                                         <span>{t('contact_ai_cta')}</span>
                                     )}
                                 </button>
-                                {error && <p className="mt-2 text-center text-red-400" role="alert">{error}</p>}
+                                {error && <p className="text-red-400 text-sm text-center" role="alert">{error}</p>}
                             </div>
                         ) : (
                             renderResult()
