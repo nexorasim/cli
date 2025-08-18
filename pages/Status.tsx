@@ -69,20 +69,18 @@ const StatusPage: React.FC = () => {
                 const data = await getServiceStatus();
                 if (isMounted) {
                     setStatusData(data);
-                    setError(null); // Clear error on successful fetch
+                    setError(null);
                 }
             } catch (err) {
                 console.error("Failed to fetch status:", err);
                 if (isMounted) {
-                    // Set error immediately on failure
-                    // This will show the error banner, while keeping stale data if available.
-                    setError(t('status_loading_error'));
+                    setError('Failed to load status');
                 }
             }
         };
 
-        fetchStatus(); // Initial fetch
-        const interval = setInterval(fetchStatus, 5000); // Poll every 5 seconds
+        fetchStatus();
+        const interval = setInterval(fetchStatus, 5000);
 
         return () => {
             isMounted = false;
@@ -103,11 +101,11 @@ const StatusPage: React.FC = () => {
 
     const OverallStatusBanner = () => {
         if (!statusData) return null;
-        const status = statusData.overallStatus;
+        const status = statusData.status;
         const config = {
-            OPERATIONAL: { text: t('status_overall_operational'), color: 'border-status-green/50 bg-status-green/10 text-status-green' },
-            DEGRADED: { text: t('status_overall_degraded'), color: 'border-status-yellow/50 bg-status-yellow/10 text-status-yellow' },
-            OUTAGE: { text: t('status_overall_outage'), color: 'border-status-red/50 bg-status-red/10 text-status-red' },
+            OPERATIONAL: { text: 'All Systems Operational', color: 'border-green-500/50 bg-green-500/10 text-green-400' },
+            DEGRADED: { text: 'Some Systems Degraded', color: 'border-yellow-500/50 bg-yellow-500/10 text-yellow-400' },
+            OUTAGE: { text: 'System Outage', color: 'border-red-500/50 bg-red-500/10 text-red-400' },
         }[status];
 
         return (
@@ -120,13 +118,13 @@ const StatusPage: React.FC = () => {
     return (
         <div ref={contentRef} className={`max-w-5xl mx-auto ${locale === 'my' ? 'font-myanmar' : ''}`}>
             <div className="text-center mb-6">
-                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">{t('status_title')}</h1>
+                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">System Status</h1>
                 <p className="text-sm text-gray-400 font-mono">
-                    {t('status_last_updated')} {statusData ? new Date(statusData.lastChecked).toLocaleString() : '...'}
+                    Last updated: {statusData ? new Date(statusData.lastChecked).toLocaleString() : '...'}
                 </p>
             </div>
             
-            {error && <div className="p-4 rounded-lg border text-center font-semibold mb-8 border-status-red/50 bg-status-red/10 text-status-red">{error}</div>}
+            {error && <div className="p-4 rounded-lg border text-center font-semibold mb-8 border-red-500/50 bg-red-500/10 text-red-400">{error}</div>}
             
             {!statusData && !error && (
                 <div className="text-center text-gray-400 py-10">Loading system status...</div>
@@ -135,12 +133,25 @@ const StatusPage: React.FC = () => {
             {statusData && (
                  <>
                     <OverallStatusBanner />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {statusData.services.map(service => (
-                            <div key={service.id} className="service-card">
-                                <ServiceStatusCard service={service} />
-                            </div>
-                        ))}
+                    <div className="grid grid-cols-1 gap-4">
+                        <div className="service-card">
+                            <GlassCard className="!p-4">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="font-bold text-white">eSIM Myanmar Service</h3>
+                                    <div className="text-sm font-semibold flex items-center gap-2">
+                                        <StatusIndicator status={statusData.status} />
+                                        <span className={statusData.status === 'OPERATIONAL' ? 'text-green-400' : statusData.status === 'DEGRADED' ? 'text-yellow-400' : 'text-red-400'}>
+                                            {statusData.status}
+                                        </span>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-400 mt-2">{statusData.message}</p>
+                                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                                    <span>Uptime: {statusData.uptime}%</span>
+                                    <span>Response Time: {statusData.responseTime}ms</span>
+                                </div>
+                            </GlassCard>
+                        </div>
                     </div>
                  </>
             )}
