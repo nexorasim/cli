@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useI18n } from '../hooks/useI18n';
-import { getStatus, StatusResponse, Service, ServiceStatus } from '../lib/api';
+import { getServiceStatus, StatusResponse } from '../lib/api';
+
+// Define missing types
+export type ServiceStatus = 'OPERATIONAL' | 'DEGRADED' | 'OUTAGE';
+
+export interface Service {
+  id: string;
+  name: string;
+  status: ServiceStatus;
+  message: string;
+  latency: number;
+}
 import GlassCard from '../components/GlassCard';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 
