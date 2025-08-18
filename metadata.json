@@ -1,0 +1,8 @@
+{
+  "name": "eSIM Myanmar",
+  "description": "Easily buy, activate, and manage your eSIM online. 100% digital, secure, and GSMA-compliant.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "prompt": ""
+}
