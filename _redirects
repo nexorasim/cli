@@ -1,0 +1,8 @@
+/* /index.html 200
+
+# API redirects (if any backend endpoints are added)
+/api/* /api/:splat 200
+
+# Specific page redirects for SEO
+/esim /buy-esim 301
+/pricing /buy-esim 301
