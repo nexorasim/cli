@@ -79,7 +79,7 @@ jobs:
     - name: Validate JSON files
       run: |
         find . -name "*.json" -not -path "./node_modules/*" -exec jq empty {} \;
-        echo "✅ All JSON files are valid"
+        echo "All JSON files are valid"
 
     - name: Validate YAML files
       run: |
