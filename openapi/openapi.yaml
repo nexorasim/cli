@@ -145,15 +145,15 @@ paths:
         '200':
           description: Terms of service page rendered successfully
 
-  /refund-policy:
+  /public:
     get:
-      summary: Refund policy page
-      description: Refund and cancellation policy
+      summary: Public directory
+      description: Static assets directory
       tags:
-        - Legal
+        - Static
       responses:
         '200':
-          description: Refund policy page rendered successfully
+          description: Static files served successfully
 
 # Component schemas
 components:
