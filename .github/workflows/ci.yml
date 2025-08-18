@@ -101,9 +101,9 @@ jobs:
     - name: Run tests (if any)
       run: |
         if npm run test --if-present; then
-          echo "✅ Tests passed"
+          echo "Tests passed"
         else
-          echo "⚠️ No tests found or tests failed"
+          echo "No tests found or tests failed"
         fi
 
   deploy:
