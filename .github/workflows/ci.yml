@@ -41,12 +41,12 @@ jobs:
 
     - name: Validate feeds XML files
       run: |
-        for file in feeds/*.xml atom.xml rss.xml; do
+        for file in public/feeds/*.xml public/atom.xml public/rss.xml; do
           if [ -f "$file" ]; then
             xmllint --noout "$file"
-            echo "✅ $file is valid"
+            echo "$file is valid"
           else
-            echo "⚠️ $file not found, skipping"
+            echo "$file not found, skipping"
           fi
         done
 
