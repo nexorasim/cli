@@ -70,9 +70,9 @@ jobs:
         for file in openapi/*.yaml openapi/*.yml openapi/*.json; do
           if [ -f "$file" ]; then
             spectral lint "$file"
-            echo "✅ $file validated with Spectral"
+            echo "$file validated with Spectral"
           else
-            echo "⚠️ $file not found, skipping OpenAPI validation"
+            echo "$file not found, skipping OpenAPI validation"
           fi
         done
 
