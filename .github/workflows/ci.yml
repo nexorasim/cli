@@ -90,9 +90,9 @@ jobs:
       run: |
         if [ -d "nginx" ]; then
           docker run --rm -v $(pwd)/nginx:/etc/nginx/conf.d nginx:alpine nginx -t
-          echo "✅ nginx configs are valid"
+          echo "nginx configs are valid"
         else
-          echo "⚠️ nginx directory not found, skipping"
+          echo "nginx directory not found, skipping"
         fi
 
     - name: Build application
