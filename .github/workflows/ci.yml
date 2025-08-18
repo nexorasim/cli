@@ -9,26 +9,26 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
-        
+
     - name: Install dependencies
       run: npm ci
-      
+
     - name: Install validation tools
       run: |
         sudo apt-get update
         sudo apt-get install -y libxml2-utils jq yamllint
         npm install -g @stoplight/spectral-cli
-        
+
     - name: Validate sitemap.xml
       run: |
         if [ -f "sitemap.xml" ]; then
@@ -38,7 +38,7 @@ jobs:
           echo "❌ sitemap.xml not found"
           exit 1
         fi
-        
+
     - name: Validate feeds XML files
       run: |
         for file in feeds/*.xml atom.xml rss.xml; do
@@ -49,7 +49,7 @@ jobs:
             echo "⚠️ $file not found, skipping"
           fi
         done
-        
+
     - name: Validate robots.txt
       run: |
         if [ -f "robots.txt" ]; then
@@ -64,7 +64,7 @@ jobs:
           echo "❌ robots.txt not found"
           exit 1
         fi
-        
+
     - name: Validate OpenAPI specs
       run: |
         for file in openapi/*.yaml openapi/*.yml openapi/*.json; do
@@ -75,17 +75,17 @@ jobs:
             echo "⚠️ $file not found, skipping OpenAPI validation"
           fi
         done
-        
+
     - name: Validate JSON files
       run: |
         find . -name "*.json" -not -path "./node_modules/*" -exec jq empty {} \;
         echo "✅ All JSON files are valid"
-        
+
     - name: Validate YAML files
       run: |
         find . -name "*.yml" -o -name "*.yaml" -not -path "./node_modules/*" | xargs -r yamllint -d relaxed
         echo "✅ All YAML files are valid"
-        
+
     - name: Validate nginx configs
       run: |
         if [ -d "nginx" ]; then
@@ -94,10 +94,10 @@ jobs:
         else
           echo "⚠️ nginx directory not found, skipping"
         fi
-        
+
     - name: Build application
       run: npm run build
-      
+
     - name: Run tests (if any)
       run: |
         if npm run test --if-present; then
@@ -110,40 +110,40 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    
+
     permissions:
       contents: read
       pages: write
       id-token: write
-      
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-      
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
-        
+
     - name: Install dependencies
       run: npm ci
-      
+
     - name: Build
       run: npm run build
-      
+
     - name: Setup Pages
       uses: actions/configure-pages@v4
-      
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         path: './dist'
-        
+
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4

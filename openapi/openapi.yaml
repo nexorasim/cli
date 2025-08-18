@@ -34,7 +34,7 @@ paths:
             text/html:
               schema:
                 type: string
-                
+
   /buy-esim:
     get:
       summary: Buy eSIM page
@@ -44,7 +44,7 @@ paths:
       responses:
         '200':
           description: eSIM details page rendered successfully
-          
+
   /about:
     get:
       summary: About page
@@ -54,7 +54,7 @@ paths:
       responses:
         '200':
           description: About page rendered successfully
-          
+
   /compatibility:
     get:
       summary: Device compatibility page
@@ -64,7 +64,7 @@ paths:
       responses:
         '200':
           description: Compatibility page rendered successfully
-          
+
   /how-it-works:
     get:
       summary: How it works page
@@ -74,7 +74,7 @@ paths:
       responses:
         '200':
           description: How it works page rendered successfully
-          
+
   /what-is-esim:
     get:
       summary: What is eSIM page
@@ -84,7 +84,7 @@ paths:
       responses:
         '200':
           description: What is eSIM page rendered successfully
-          
+
   /help-center:
     get:
       summary: Help center page
@@ -94,7 +94,7 @@ paths:
       responses:
         '200':
           description: Help center page rendered successfully
-          
+
   /contact:
     get:
       summary: Contact page
@@ -104,7 +104,7 @@ paths:
       responses:
         '200':
           description: Contact page rendered successfully
-          
+
   /partners:
     get:
       summary: Partners page
@@ -114,7 +114,7 @@ paths:
       responses:
         '200':
           description: Partners page rendered successfully
-          
+
   /blog:
     get:
       summary: Blog page
@@ -134,7 +134,7 @@ paths:
       responses:
         '200':
           description: Privacy policy page rendered successfully
-          
+
   /terms-of-service:
     get:
       summary: Terms of service page
@@ -144,7 +144,7 @@ paths:
       responses:
         '200':
           description: Terms of service page rendered successfully
-          
+
   /refund-policy:
     get:
       summary: Refund policy page
