@@ -1,0 +1,17 @@
+extends: ["spectral:oas"]
+rules:
+  operation-description: true
+  operation-operationId: true
+  operation-summary: true
+  operation-tags: true
+  path-params: true
+  contact-properties: false
+  license-url: false
+  no-eval-in-markdown: true
+  no-script-tags-in-markdown: true
+  openapi-tags: true
+  operation-operationId-unique: true
+  path-declarations-must-exist: true
+  path-keys-no-trailing-slash: true
+  path-not-include-query: true
+  tag-description: false
