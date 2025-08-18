@@ -50,18 +50,18 @@ jobs:
           fi
         done
 
-    - name: Validate robots.txt
+    - name: Validate public/robots.txt
       run: |
-        if [ -f "robots.txt" ]; then
-          if [ -s "robots.txt" ]; then
-            echo "✅ robots.txt is non-empty"
-            cat robots.txt
+        if [ -f "public/robots.txt" ]; then
+          if [ -s "public/robots.txt" ]; then
+            echo "robots.txt is non-empty"
+            cat public/robots.txt
           else
-            echo "❌ robots.txt is empty"
+            echo "robots.txt is empty"
             exit 1
           fi
         else
-          echo "❌ robots.txt not found"
+          echo "public/robots.txt not found"
           exit 1
         fi
 
