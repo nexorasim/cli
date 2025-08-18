@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <id>https://esim.com.mm/</id>
+  <title>eSIM Myanmar - Digital eSIM Solutions</title>
+  <subtitle>Latest updates and news from eSIM Myanmar</subtitle>
+  <link href="https://esim.com.mm/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="https://esim.com.mm/" rel="alternate" type="text/html"/>
+  <updated>2025-01-09T00:00:00Z</updated>
+  <author>
+    <name>eSIM Myanmar</name>
+    <email>info@esim.com.mm</email>
+  </author>
+  <icon>https://esim.com.mm/favicon.ico</icon>
+  <logo>https://esim.com.mm/logo.png</logo>
+  
+  <entry>
+    <id>https://esim.com.mm/blog/welcome</id>
+    <title>Welcome to eSIM Myanmar</title>
+    <link href="https://esim.com.mm/blog/welcome" rel="alternate" type="text/html"/>
+    <updated>2025-01-09T00:00:00Z</updated>
+    <published>2025-01-09T00:00:00Z</published>
+    <summary>Experience the future of mobile connectivity with eSIM Myanmar. 100% digital, secure, and GSMA-compliant eSIM solutions.</summary>
+    <content type="html"><![CDATA[
+      <p>Welcome to eSIM Myanmar, your trusted partner for digital eSIM solutions in Myanmar and beyond.</p>
+      <p>Our cutting-edge technology allows you to easily buy, activate, and manage your eSIM online without the need for physical SIM cards.</p>
+    ]]>

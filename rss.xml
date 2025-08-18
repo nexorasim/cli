@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>eSIM Myanmar - Digital eSIM Solutions</title>
+    <description>Latest updates and news from eSIM Myanmar</description>
+    <link>https://esim.com.mm/</link>
+    <atom:link href="https://esim.com.mm/rss.xml" rel="self" type="application/rss+xml"/>
+    <language>en</language>
+    <lastBuildDate>Thu, 09 Jan 2025 00:00:00 GMT</lastBuildDate>
+    <pubDate>Thu, 09 Jan 2025 00:00:00 GMT</pubDate>
+    <ttl>60</ttl>
+    <managingEditor>info@esim.com.mm (eSIM Myanmar)</managingEditor>
+    <webMaster>info@esim.com.mm (eSIM Myanmar)</webMaster>
+    <image>
+      <url>https://esim.com.mm/logo.png</url>
+      <title>eSIM Myanmar</title>
+      <link>https://esim.com.mm/</link>
+      <width>144</width>
+      <height>144</height>
+    </image>
+    
+    <item>
+      <title>Welcome to eSIM Myanmar</title>
+      <description>Experience the future of mobile connectivity with eSIM Myanmar. 100% digital, secure, and GSMA-compliant eSIM solutions.</description>
+      <link>https://esim.com.mm/blog/welcome</link>
+      <guid isPermaLink="true">https://esim.com.mm/blog/welcome</guid>
+      <pubDate>Thu, 09 Jan 2025 00:00:00 GMT</pubDate>
+      <author>info@esim.com.mm (eSIM Myanmar)</author>
+    </item>
+    
+  </channel>
+</rss>

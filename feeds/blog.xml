@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>eSIM Myanmar Blog</title>
+    <description>Blog posts and articles about eSIM technology and mobile connectivity</description>
+    <link>https://esim.com.mm/blog</link>
+    <atom:link href="https://esim.com.mm/feeds/blog.xml" rel="self" type="application/rss+xml"/>
+    <language>en</language>
+    <lastBuildDate>Thu, 09 Jan 2025 00:00:00 GMT</lastBuildDate>
+    <pubDate>Thu, 09 Jan 2025 00:00:00 GMT</pubDate>
+    <ttl>60</ttl>
+    
+    <item>
+      <title>Understanding eSIM Technology</title>
+      <description>Learn about eSIM technology and how it's revolutionizing mobile connectivity in Myanmar.</description>
+      <link>https://esim.com.mm/what-is-esim</link>
+      <guid isPermaLink="true">https://esim.com.mm/what-is-esim</guid>
+      <pubDate>Thu, 09 Jan 2025 00:00:00 GMT</pubDate>
+    </item>
+    
+    <item>
+      <title>How eSIM Works</title>
+      <description>Step-by-step guide on how eSIM activation and management works.</description>
+      <link>https://esim.com.mm/how-it-works</link>
+      <guid isPermaLink="true">https://esim.com.mm/how-it-works</guid>
+      <pubDate>Thu, 09 Jan 2025 00:00:00 GMT</pubDate>
+    </item>
+    
+  </channel>
+</rss>
