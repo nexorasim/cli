@@ -84,7 +84,7 @@ jobs:
     - name: Validate YAML files
       run: |
         find . -name "*.yml" -o -name "*.yaml" -not -path "./node_modules/*" | xargs -r yamllint -d relaxed
-        echo "✅ All YAML files are valid"
+        echo "All YAML files are valid"
 
     - name: Validate nginx configs
       run: |
