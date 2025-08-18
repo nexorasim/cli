@@ -198,3 +198,5 @@ tags:
     description: Website pages and routes
   - name: Legal
     description: Legal pages and policies
+  - name: Static
+    description: Static assets and files
