@@ -66,7 +66,7 @@ const StatusPage: React.FC = () => {
         
         const fetchStatus = async () => {
             try {
-                const data = await getStatus();
+                const data = await getServiceStatus();
                 if (isMounted) {
                     setStatusData(data);
                     setError(null); // Clear error on successful fetch
