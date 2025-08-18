@@ -29,13 +29,13 @@ jobs:
         sudo apt-get install -y libxml2-utils jq yamllint
         npm install -g @stoplight/spectral-cli
 
-    - name: Validate sitemap.xml
+    - name: Validate public/sitemap.xml
       run: |
-        if [ -f "sitemap.xml" ]; then
-          xmllint --noout sitemap.xml
-          echo "✅ sitemap.xml is valid"
+        if [ -f "public/sitemap.xml" ]; then
+          xmllint --noout public/sitemap.xml
+          echo "sitemap.xml is valid"
         else
-          echo "❌ sitemap.xml not found"
+          echo "public/sitemap.xml not found"
           exit 1
         fi
 
