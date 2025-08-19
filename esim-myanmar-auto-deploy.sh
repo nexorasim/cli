@@ -4,9 +4,9 @@
 set -e  # Exit on any error
 
 # Configuration Variables
-REPO_URL="https://github.com/nexorasim/cli.git"  # Replace with actual eSIM Myanmar repo
-REPO_DIR="esim-myanmar-website"
-VERCEL_TOKEN="${VERCEL_TOKEN:-YeHB18fhvsscigEgaGglpg5A}"  # Can be overridden by environment
+REPO_URL="${REPO_URL:-https://github.com/nexorasim/cli.git}"
+REPO_DIR="${REPO_DIR:-esim-myanmar-website}"
+VERCEL_TOKEN="${VERCEL_TOKEN:-YeHB18fhvsscigEgaGglpg5A}"
 VERCEL_PROJECT_ID="${VERCEL_PROJECT_ID:-prj_QT0WVnXI3zwzZ2AoF2GcGAQ8zBss}"
 WEBSITE_URL="${WEBSITE_URL:-https://www.esim.com.mm}"
 LOG_FILE="deployment-$(date +%Y%m%d-%H%M%S).log"
@@ -331,7 +331,7 @@ check_url_seo() {
     fi
     
     # Extract and check title
-    title=$(echo "$content" | grep -ioE '<title[^>]*>([^<]*)</title>' | sed -E 's/<title[^>]*>([^<]*)<\/title>/\1/' | head -1)
+    title=$(echo "$content" | grep -i '<title>' | sed 's/.*<title>//' | sed 's/<\/title>.*//' | head -1)
     if [ -z "$title" ]; then
         log_warning "Missing title tag: $url"
     elif [ ${#title} -gt 60 ]; then
@@ -343,19 +343,23 @@ check_url_seo() {
     fi
     
     # Check meta description
-    description=$(echo "$content" | grep -ioE '<meta[^>]*name=["\'"'"']description["\'"'"'][^>]*content=["\'"'"']([^"'"'"']*)["\'"'"']' | sed -E 's/.*content=["\'"'"']([^"'"'"']*)["\'"'"'].*/\1/' | head -1)
+    description=$(echo "$content" | grep -i 'name="description"' | head -1)
     if [ -z "$description" ]; then
         log_warning "Missing meta description: $url"
-    elif [ ${#description} -gt 160 ]; then
-        log_warning "Meta description too long (${#description} chars): $url"
-    elif [ ${#description} -lt 120 ]; then
-        log_warning "Meta description too short (${#description} chars): $url"
     else
-        log_info "Meta description OK (${#description} chars)"
+        # Extract content from meta tag
+        desc_content=$(echo "$description" | sed 's/.*content="//' | sed 's/".*//')
+        if [ ${#desc_content} -gt 160 ]; then
+            log_warning "Meta description too long (${#desc_content} chars): $url"
+        elif [ ${#desc_content} -lt 120 ]; then
+            log_warning "Meta description too short (${#desc_content} chars): $url"
+        else
+            log_info "Meta description OK (${#desc_content} chars)"
+        fi
     fi
     
     # Check H1 tags
-    h1_count=$(echo "$content" | grep -ioE '<h1[^>]*>' | wc -l)
+    h1_count=$(echo "$content" | grep -i '<h1' | wc -l)
     if [ "$h1_count" -eq 0 ]; then
         log_warning "Missing H1 tag: $url"
     elif [ "$h1_count" -gt 1 ]; then
@@ -365,7 +369,7 @@ check_url_seo() {
     fi
     
     # Check for essential meta tags
-    if ! echo "$content" | grep -q 'name=["\']viewport["\']'; then
+    if ! echo "$content" | grep -q 'name="viewport"'; then
         log_warning "Missing viewport meta tag: $url"
     fi
     
@@ -382,7 +386,7 @@ sitemap_response=$(curl -s "${WEBSITE_URL}/sitemap.xml" 2>/dev/null || echo "")
 
 if [ -n "$sitemap_response" ]; then
     # Extract URLs from sitemap
-    urls=$(echo "$sitemap_response" | grep -oE '<loc>[^<]+</loc>' | sed 's/<loc>//g; s/<\/loc>//g')
+    urls=$(echo "$sitemap_response" | grep -o '<loc>[^<]*</loc>' | sed 's/<loc>//g; s/<\/loc>//g')
     
     if [ -n "$urls" ]; then
         log_info "Found $(echo "$urls" | wc -l) URLs in sitemap"
@@ -443,7 +447,8 @@ fi
 log_info "Generating deployment and SEO audit report..."
 
 # Create summary report
-cat > "deployment-report-$(date +%Y%m%d-%H%M%S).md" << EOF
+report_file="deployment-report-$(date +%Y%m%d-%H%M%S).md"
+cat > "$report_file" << EOF
 # eSIM Myanmar Website Deployment & SEO Audit Report
 
 **Date**: $(date '+%Y-%m-%d %H:%M:%S')
@@ -475,12 +480,12 @@ cat > "deployment-report-$(date +%Y%m%d-%H%M%S).md" << EOF
 
 ## Log Files
 - Detailed log: \`${LOG_FILE}\`
-- This report: \`deployment-report-$(date +%Y%m%d-%H%M%S).md\`
+- This report: \`${report_file}\`
 EOF
 
 log_success "===== eSIM Myanmar Website Auto Deploy + SEO Audit Completed Successfully ====="
 log_info "Detailed logs saved to: ${LOG_FILE}"
-log_info "Summary report generated: deployment-report-$(date +%Y%m%d-%H%M%S).md"
+log_info "Summary report generated: ${report_file}"
 
 # Return to original directory
 cd ..
