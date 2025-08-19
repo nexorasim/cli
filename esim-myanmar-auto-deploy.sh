@@ -343,7 +343,7 @@ check_url_seo() {
     fi
     
     # Check meta description
-    description=$(echo "$content" | grep -ioE '<meta[^>]*name=["\']description["\'][^>]*content=["\']([^"\']*)["\']' | sed -E 's/.*content=["\']([^"\']*)["\'].*/\1/' | head -1)
+    description=$(echo "$content" | grep -ioE '<meta[^>]*name=["\'"'"']description["\'"'"'][^>]*content=["\'"'"']([^"'"'"']*)["\'"'"']' | sed -E 's/.*content=["\'"'"']([^"'"'"']*)["\'"'"'].*/\1/' | head -1)
     if [ -z "$description" ]; then
         log_warning "Missing meta description: $url"
     elif [ ${#description} -gt 160 ]; then
