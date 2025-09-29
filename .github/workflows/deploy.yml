@@ -1,0 +1,102 @@
+name: Deploy eSIM Myanmar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '18'
+  STAGING_URL: 'https://staging.esim-myanmar.com'
+  PRODUCTION_URL: 'https://esim-myanmar.com'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Validate XML files
+        run: |
+          sudo apt-get update && sudo apt-get install -y libxml2-utils
+          xmllint --noout sitemap.xml
+          xmllint --noout rss.xml
+          xmllint --noout atom.xml
+      
+      - name: Validate OpenAPI spec
+        run: |
+          npm install -g @apidevtools/swagger-parser
+          swagger-parser validate openapi.yaml
+
+  deploy-staging:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to staging
+        run: |
+          # Add your deployment commands here
+          echo "Deploying to staging..."
+          # rsync, docker, or your preferred deployment method
+      
+      - name: Run validation checks
+        run: |
+          chmod +x update-check.sh
+          ./update-check.sh staging
+      
+      - name: Notify on failure
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: 'Staging deployment failed!'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to production
+        run: |
+          # Add your production deployment commands
+          echo "Deploying to production..."
+      
+      - name: Run production validation
+        run: |
+          chmod +x update-check.sh
+          ./update-check.sh production
+      
+      - name: Update sitemap
+        run: |
+          # Ping search engines about sitemap update
+          curl -s "https://www.google.com/ping?sitemap=${{ env.PRODUCTION_URL }}/sitemap.xml"
+          curl -s "https://www.bing.com/ping?sitemap=${{ env.PRODUCTION_URL }}/sitemap.xml"
+      
+      - name: Notify success
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: 'Production deployment successful! 🚀'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

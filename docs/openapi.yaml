@@ -1,0 +1,767 @@
+openapi: 3.1.0
+info:
+  title: eSIM Myanmar API
+  description: |
+    **eSIM Myanmar REST API** - Complete API for managing eSIM plans, purchases, and user accounts.
+    
+    ## Features
+    - Browse and purchase eSIM plans for Myanmar
+    - Account management and authentication
+    - Real-time plan activation and monitoring
+    - Multi-language support (English & Myanmar/Burmese)
+    
+    ## Authentication
+    All protected endpoints require a Bearer token in the Authorization header.
+    
+    ## Rate Limiting
+    - **General endpoints**: 100 requests per minute
+    - **Authentication endpoints**: 20 requests per minute
+    - **Purchase endpoints**: 10 requests per minute
+    
+    ## Response Format
+    All responses follow a consistent format with proper HTTP status codes and structured error messages.
+    
+    ## Languages
+    API supports both English (`en`) and Myanmar (`my`) languages via the `Accept-Language` header.
+    
+  version: 1.0.0
+  contact:
+    name: eSIM Myanmar API Support
+    email: api-support@esim-myanmar.com
+    url: https://esim-myanmar.com/support
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://esim-myanmar.com/terms-of-service
+
+servers:
+  - url: https://api.esim-myanmar.com/v1
+    description: Production API Server
+  - url: https://staging-api.esim-myanmar.com/v1
+    description: Staging API Server
+  - url: http://localhost:8001/api/v1
+    description: Development Server
+
+# =============================================
+# SECURITY SCHEMES
+# =============================================
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT token obtained from `/auth/login` or `/auth/register` endpoints.
+        
+        **Example:**
+        ```
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        ```
+    
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API Key for service-to-service authentication
+
+  # =============================================
+  # REUSABLE SCHEMAS
+  # =============================================
+  schemas:
+    # Error Response Schema
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code identifier
+          example: "VALIDATION_ERROR"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "The provided email address is invalid"
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: true
+        timestamp:
+          type: string
+          format: date-time
+          description: Error occurrence timestamp
+          example: "2025-01-08T10:30:00Z"
+    
+    # Success Response Schema
+    SuccessResponse:
+      type: object
+      required:
+        - success
+        - data
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          description: Response data payload
+        message:
+          type: string
+          description: Optional success message
+          example: "Operation completed successfully"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-01-08T10:30:00Z"
+
+    # User Schema
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user identifier
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: "user@example.com"
+        name:
+          type: string
+          description: Full name
+          example: "John Doe"
+        phone:
+          type: string
+          description: Phone number with country code
+          example: "+1-555-123-4567"
+        language:
+          type: string
+          enum: [en, my]
+          description: Preferred language
+          example: "en"
+        created_at:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+          example: "2025-01-01T00:00:00Z"
+
+    # eSIM Plan Schema
+    ESIMPlan:
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - data_amount
+        - validity_days
+        - network_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique plan identifier
+          example: "plan-123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: object
+          description: Plan name in multiple languages
+          properties:
+            en:
+              type: string
+              example: "Tourist 1GB - 7 Days"
+            my:
+              type: string
+              example: "ခရီးသား ၁ဂျီဘီ - ၇ရက်"
+        description:
+          type: object
+          description: Plan description in multiple languages
+          properties:
+            en:
+              type: string
+              example: "Perfect for short trips to Myanmar with 1GB high-speed data"
+            my:
+              type: string
+              example: "မြန်မာနိုင်ငံသို့ တိုတောင်းသောခရီးများအတွက် သင့်လျော်သည်"
+        price:
+          type: number
+          format: decimal
+          description: Plan price in USD
+          example: 8.99
+        data_amount:
+          type: string
+          description: Data allowance
+          example: "1GB"
+        validity_days:
+          type: integer
+          description: Plan validity in days
+          example: 7
+        network_type:
+          type: array
+          items:
+            type: string
+            enum: [3G, 4G, 5G]
+          description: Supported network types
+          example: ["4G", "5G"]
+        coverage_areas:
+          type: array
+          items:
+            type: string
+          description: Coverage areas
+          example: ["Yangon", "Mandalay", "Naypyidaw"]
+        features:
+          type: array
+          items:
+            type: string
+          description: Plan features
+          example: ["Instant activation", "No roaming charges", "Hotspot enabled"]
+        category:
+          type: string
+          enum: [tourist, business, local, unlimited]
+          description: Plan category
+          example: "tourist"
+        is_active:
+          type: boolean
+          description: Plan availability status
+          example: true
+
+    # Purchase Schema
+    Purchase:
+      type: object
+      required:
+        - id
+        - user_id
+        - plan_id
+        - status
+        - total_amount
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique purchase identifier
+          example: "purchase-123e4567-e89b-12d3-a456-426614174000"
+        user_id:
+          type: string
+          format: uuid
+          description: User who made the purchase
+          example: "user-123e4567-e89b-12d3-a456-426614174000"
+        plan_id:
+          type: string
+          format: uuid
+          description: Purchased plan identifier
+          example: "plan-123e4567-e89b-12d3-a456-426614174000"
+        status:
+          type: string
+          enum: [pending, completed, failed, refunded]
+          description: Purchase status
+          example: "completed"
+        total_amount:
+          type: number
+          format: decimal
+          description: Total amount paid in USD
+          example: 8.99
+        qr_code:
+          type: string
+          description: Base64 encoded QR code for eSIM installation
+          example: "data:image/png;base64,iVBORw0KGgoAAAANS..."
+        iccid:
+          type: string
+          description: eSIM ICCID number
+          example: "89314404000123456789"
+        activation_code:
+          type: string
+          description: Manual activation code
+          example: "LPA:1$esim-myanmar.com$ABC123"
+        expires_at:
+          type: string
+          format: date-time
+          description: eSIM expiration timestamp
+          example: "2025-01-15T23:59:59Z"
+        created_at:
+          type: string
+          format: date-time
+          description: Purchase timestamp
+          example: "2025-01-08T10:30:00Z"
+
+# =============================================
+# API ENDPOINTS
+# =============================================
+paths:
+  # =============================================
+  # AUTHENTICATION ENDPOINTS
+  # =============================================
+  /auth/register:
+    post:
+      summary: Register New User
+      description: Create a new user account with email and password
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - name
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "user@example.com"
+                password:
+                  type: string
+                  minLength: 8
+                  example: "securepassword123"
+                name:
+                  type: string
+                  example: "John Doe"
+                phone:
+                  type: string
+                  example: "+1-555-123-4567"
+                language:
+                  type: string
+                  enum: [en, my]
+                  default: en
+                  example: "en"
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            $ref: '#/components/schemas/User'
+                          token:
+                            type: string
+                            description: JWT authentication token
+                            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/login:
+    post:
+      summary: User Login
+      description: Authenticate user with email and password
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "securepassword123"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            $ref: '#/components/schemas/User'
+                          token:
+                            type: string
+                            description: JWT authentication token
+                            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # =============================================
+  # ESIM PLANS ENDPOINTS
+  # =============================================
+  /plans:
+    get:
+      summary: Get All eSIM Plans
+      description: Retrieve all available eSIM plans with filtering options
+      tags:
+        - eSIM Plans
+      parameters:
+        - name: category
+          in: query
+          description: Filter by plan category
+          required: false
+          schema:
+            type: string
+            enum: [tourist, business, local, unlimited]
+        - name: min_price
+          in: query
+          description: Minimum price filter (USD)
+          required: false
+          schema:
+            type: number
+            format: decimal
+        - name: max_price
+          in: query
+          description: Maximum price filter (USD)
+          required: false
+          schema:
+            type: number
+            format: decimal
+        - name: Accept-Language
+          in: header
+          description: Preferred language for response
+          required: false
+          schema:
+            type: string
+            enum: [en, my]
+            default: en
+      responses:
+        '200':
+          description: Plans retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          plans:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/ESIMPlan'
+                          total:
+                            type: integer
+                            example: 12
+                          categories:
+                            type: array
+                            items:
+                              type: string
+                            example: ["tourist", "business", "local"]
+
+  /plans/{planId}:
+    get:
+      summary: Get Plan Details
+      description: Retrieve detailed information about a specific eSIM plan
+      tags:
+        - eSIM Plans
+      parameters:
+        - name: planId
+          in: path
+          required: true
+          description: Plan identifier
+          schema:
+            type: string
+            format: uuid
+        - name: Accept-Language
+          in: header
+          description: Preferred language for response
+          required: false
+          schema:
+            type: string
+            enum: [en, my]
+            default: en
+      responses:
+        '200':
+          description: Plan details retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          plan:
+                            $ref: '#/components/schemas/ESIMPlan'
+        '404':
+          description: Plan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # =============================================
+  # PURCHASE ENDPOINTS
+  # =============================================
+  /purchases:
+    post:
+      summary: Purchase eSIM Plan
+      description: Purchase an eSIM plan and receive activation details
+      tags:
+        - Purchases
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - plan_id
+                - payment_method
+              properties:
+                plan_id:
+                  type: string
+                  format: uuid
+                  description: Plan to purchase
+                  example: "plan-123e4567-e89b-12d3-a456-426614174000"
+                payment_method:
+                  type: string
+                  enum: [credit_card, paypal, mobile_payment]
+                  description: Payment method
+                  example: "credit_card"
+                payment_details:
+                  type: object
+                  description: Payment-specific details
+                  additionalProperties: true
+      responses:
+        '201':
+          description: Purchase completed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          purchase:
+                            $ref: '#/components/schemas/Purchase'
+        '400':
+          description: Invalid purchase data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: Get User Purchases
+      description: Retrieve all purchases for the authenticated user
+      tags:
+        - Purchases
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter by purchase status
+          required: false
+          schema:
+            type: string
+            enum: [pending, completed, failed, refunded]
+        - name: limit
+          in: query
+          description: Number of purchases to return
+          required: false
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: offset
+          in: query
+          description: Number of purchases to skip
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Purchases retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          purchases:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/Purchase'
+                          total:
+                            type: integer
+                            example: 5
+                          has_more:
+                            type: boolean
+                            example: false
+
+  /purchases/{purchaseId}:
+    get:
+      summary: Get Purchase Details
+      description: Retrieve detailed information about a specific purchase
+      tags:
+        - Purchases
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: purchaseId
+          in: path
+          required: true
+          description: Purchase identifier
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Purchase details retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          purchase:
+                            $ref: '#/components/schemas/Purchase'
+                          plan:
+                            $ref: '#/components/schemas/ESIMPlan'
+        '404':
+          description: Purchase not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # =============================================
+  # USER MANAGEMENT ENDPOINTS
+  # =============================================
+  /user/profile:
+    get:
+      summary: Get User Profile
+      description: Retrieve authenticated user's profile information
+      tags:
+        - User Management
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            $ref: '#/components/schemas/User'
+
+    patch:
+      summary: Update User Profile
+      description: Update authenticated user's profile information
+      tags:
+        - User Management
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "John Smith"
+                phone:
+                  type: string
+                  example: "+1-555-987-6543"
+                language:
+                  type: string
+                  enum: [en, my]
+                  example: "my"
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            $ref: '#/components/schemas/User'
+
+# =============================================
+# TAGS FOR ORGANIZATION
+# =============================================
+tags:
+  - name: Authentication
+    description: User registration, login, and authentication management
+  - name: eSIM Plans
+    description: Browse and retrieve eSIM plan information
+  - name: Purchases
+    description: Purchase eSIM plans and manage purchase history
+  - name: User Management
+    description: User profile and account management
+
+# =============================================
+# EXTERNAL DOCUMENTATION
+# =============================================
+externalDocs:
+  description: Full API Documentation and Integration Guide
+  url: https://docs.esim-myanmar.com/api/

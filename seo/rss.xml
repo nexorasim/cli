@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" 
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:media="http://search.yahoo.com/mrss/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+  <channel>
+    <title>eSIM Myanmar - Latest Plans &amp; Updates</title>
+    <description>Stay updated with the latest eSIM plans, tech updates, and mobile connectivity news for Myanmar travelers and locals.</description>
+    <link>https://esim-myanmar.com</link>
+    <atom:link href="https://esim-myanmar.com/rss.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Wed, 08 Jan 2025 00:00:00 GMT</lastBuildDate>
+    <pubDate>Wed, 08 Jan 2025 00:00:00 GMT</pubDate>
+    <ttl>1440</ttl>
+    <generator>eSIM Myanmar RSS Generator 1.0</generator>
+    <managingEditor>team@esim-myanmar.com (eSIM Myanmar Team)</managingEditor>
+    <webMaster>webmaster@esim-myanmar.com (Web Team)</webMaster>
+    <copyright>Copyright 2025, eSIM Myanmar. All rights reserved.</copyright>
+    <category>Technology/Telecommunications</category>
+    
+    <image>
+      <url>https://esim-myanmar.com/images/rss-logo.png</url>
+      <title>eSIM Myanmar</title>
+      <link>https://esim-myanmar.com</link>
+      <width>144</width>
+      <height>144</height>
+    </image>
+
+    <!-- SAMPLE: New eSIM Plan Release -->
+    <item>
+      <title>New Tourist eSIM Plan: 3GB for 14 Days at $12</title>
+      <description><![CDATA[
+        Perfect for extended stays in Myanmar! Our new Tourist Plus plan offers 3GB of high-speed data valid for 14 days, ideal for travelers exploring multiple cities.
+      ]]></description>
+      <content:encoded><![CDATA[
+        <h2>Introducing Tourist Plus eSIM Plan</h2>
+        <p>We're excited to announce our latest eSIM offering designed specifically for travelers who need reliable connectivity during extended stays in Myanmar.</p>
+        
+        <h3>Plan Features:</h3>
+        <ul>
+          <li><strong>3GB High-Speed Data</strong> - Perfect for maps, messaging, and social media</li>
+          <li><strong>14-Day Validity</strong> - Extended coverage for longer trips</li>
+          <li><strong>4G/5G Networks</strong> - Fast speeds across Myanmar</li>
+          <li><strong>Instant Activation</strong> - Ready to use in minutes</li>
+          <li><strong>No Roaming Charges</strong> - Local rates throughout Myanmar</li>
+        </ul>
+        
+        <h3>Perfect For:</h3>
+        <p>✓ Extended business trips<br/>
+        ✓ Multi-city tourism<br/>
+        ✓ Digital nomads<br/>
+        ✓ Backpackers exploring Myanmar</p>
+        
+        <h3>Coverage Areas:</h3>
+        <p>Full coverage in Yangon, Mandalay, Naypyidaw, Bagan, Inle Lake, and major highways connecting these cities.</p>
+        
+        <p><a href="https://esim-myanmar.com/plans/tourist-plus-3gb-14days" style="background-color: #E53E3E; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 16px 0;">Get Tourist Plus Plan - $12</a></p>
+        
+        <p><em>Available now with instant QR code delivery via email.</em></p>
+      ]]></content:encoded>
+      <link>https://esim-myanmar.com/plans/tourist-plus-3gb-14days</link>
+      <guid isPermaLink="true">https://esim-myanmar.com/plans/tourist-plus-3gb-14days</guid>
+      <pubDate>Wed, 08 Jan 2025 00:00:00 GMT</pubDate>
+      <category>New Plans</category>
+      <author>team@esim-myanmar.com (eSIM Myanmar Team)</author>
+      <media:content url="https://esim-myanmar.com/images/tourist-plus-plan.jpg" type="image/jpeg" width="1200" height="630">
+        <media:title>Tourist Plus eSIM Plan - 3GB for 14 Days</media:title>
+        <media:description>Perfect for extended stays in Myanmar with 3GB high-speed data</media:description>
+      </media:content>
+    </item>
+
+    <!-- SAMPLE: Blog Post -->
+    <item>
+      <title>Complete Guide to eSIM Setup in Myanmar 2025</title>
+      <description><![CDATA[
+        Step-by-step guide to activating your eSIM in Myanmar. Compatible devices, network settings, and troubleshooting tips included.
+      ]]></description>
+      <content:encoded><![CDATA[
+        <h2>Everything You Need to Know About eSIM in Myanmar</h2>
+        <p>Setting up an eSIM in Myanmar has never been easier. Follow our comprehensive guide to get connected in minutes.</p>
+        
+        <h3>What You'll Need:</h3>
+        <ul>
+          <li>eSIM-compatible device (iPhone XS or newer, Google Pixel 3 or newer, etc.)</li>
+          <li>Stable WiFi connection for initial setup</li>
+          <li>QR code from your eSIM purchase</li>
+        </ul>
+        
+        <h3>Step-by-Step Setup:</h3>
+        <ol>
+          <li><strong>Purchase your eSIM</strong> - Choose from our range of plans</li>
+          <li><strong>Receive QR code</strong> - Delivered instantly to your email</li>
+          <li><strong>Scan & Install</strong> - Use your phone's camera or settings</li>
+          <li><strong>Activate</strong> - Turn on your new eSIM line</li>
+          <li><strong>Enjoy!</strong> - You're connected to Myanmar's networks</li>
+        </ol>
+        
+        <p><a href="https://esim-myanmar.com/blog/complete-guide-esim-myanmar-2025">Read Full Guide →</a></p>
+      ]]></content:encoded>
+      <link>https://esim-myanmar.com/blog/complete-guide-esim-myanmar-2025</link>
+      <guid isPermaLink="true">https://esim-myanmar.com/blog/complete-guide-esim-myanmar-2025</guid>
+      <pubDate>Mon, 06 Jan 2025 00:00:00 GMT</pubDate>
+      <category>Guides</category>
+      <author>team@esim-myanmar.com (eSIM Myanmar Team)</author>
+      <dc:creator>Myanmar Tech Team</dc:creator>
+    </item>
+
+    <!-- SAMPLE: Company Update -->
+    <item>
+      <title>5G Network Coverage Now Available in Yangon &amp; Mandalay</title>
+      <description><![CDATA[
+        Great news! Our eSIM plans now support 5G networks in Myanmar's major cities. Experience faster speeds and improved connectivity.
+      ]]></description>
+      <link>https://esim-myanmar.com/blog/5g-network-coverage-yangon-mandalay</link>
+      <guid isPermaLink="true">https://esim-myanmar.com/blog/5g-network-coverage-yangon-mandalay</guid>
+      <pubDate>Thu, 02 Jan 2025 00:00:00 GMT</pubDate>
+      <category>Network Updates</category>
+      <author>team@esim-myanmar.com (eSIM Myanmar Team)</author>
+    </item>
+
+  </channel>
+</rss>

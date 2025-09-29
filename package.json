@@ -1,0 +1,29 @@
+{
+  "name": "esim-myanmar-website",
+  "version": "1.0.0",
+  "description": "eSIM Myanmar website with bilingual support",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "validate:xml": "xmllint --noout sitemap.xml rss.xml atom.xml",
+    "validate:api": "swagger-parser validate openapi.yaml",
+    "check:links": "node scripts/check-links.js",
+    "deploy:staging": "./update-check.sh staging",
+    "deploy:production": "./update-check.sh production"
+  },
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "libxml2-utils": "^1.0.0"
+  }
+}

@@ -1,0 +1,246 @@
+openapi: 3.1.0
+info:
+  title: eSIM Myanmar API
+  description: API for managing eSIM plans and orders in Myanmar
+  version: 1.0.0
+  contact:
+    name: eSIM Myanmar Support
+    email: api@esim-myanmar.com
+    url: https://esim-myanmar.com/support
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.esim-myanmar.com/v1
+    description: Production server
+  - url: https://staging-api.esim-myanmar.com/v1
+    description: Staging server
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for API authentication
+  
+  schemas:
+    Plan:
+      type: object
+      required:
+        - id
+        - name
+        - dataAmount
+        - duration
+        - price
+        - currency
+      properties:
+        id:
+          type: string
+          example: "plan_7day_unlimited"
+        name:
+          type: string
+          example: "7-Day Unlimited"
+        description:
+          type: string
+          example: "Unlimited data for 7 days"
+        dataAmount:
+          type: string
+          example: "Unlimited"
+        duration:
+          type: integer
+          example: 7
+          description: "Duration in days"
+        price:
+          type: number
+          format: float
+          example: 25.00
+        currency:
+          type: string
+          example: "USD"
+        isActive:
+          type: boolean
+          example: true
+    
+    Order:
+      type: object
+      required:
+        - id
+        - planId
+        - email
+        - status
+      properties:
+        id:
+          type: string
+          example: "order_123456"
+        planId:
+          type: string
+          example: "plan_7day_unlimited"
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+        status:
+          type: string
+          enum: [pending, completed, failed, refunded]
+          example: "completed"
+        qrCode:
+          type: string
+          description: "Base64 encoded QR code for eSIM activation"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:00:00Z"
+
+paths:
+  /plans:
+    get:
+      summary: Get all available eSIM plans
+      description: Retrieve list of all active eSIM plans
+      tags:
+        - Plans
+      security: []
+      parameters:
+        - name: country
+          in: query
+          schema:
+            type: string
+            default: "MM"
+          description: Country code (ISO 3166-1 alpha-2)
+        - name: duration
+          in: query
+          schema:
+            type: integer
+          description: Filter by duration in days
+      responses:
+        '200':
+          description: List of plans
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  plans:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plan'
+                  total:
+                    type: integer
+                    example: 5
+  
+  /plans/{planId}:
+    get:
+      summary: Get specific plan details
+      tags:
+        - Plans
+      security: []
+      parameters:
+        - name: planId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "plan_7day_unlimited"
+      responses:
+        '200':
+          description: Plan details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
+        '404':
+          description: Plan not found
+  
+  /orders:
+    post:
+      summary: Create new eSIM order
+      description: Purchase an eSIM plan
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - planId
+                - email
+              properties:
+                planId:
+                  type: string
+                  example: "plan_7day_unlimited"
+                email:
+                  type: string
+                  format: email
+                  example: "user@example.com"
+                paymentMethod:
+                  type: string
+                  example: "stripe"
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+  
+  /orders/{orderId}:
+    get:
+      summary: Get order details
+      tags:
+        - Orders
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "order_123456"
+      responses:
+        '200':
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+  
+  /health:
+    get:
+      summary: Health check endpoint
+      tags:
+        - System
+      security: []
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2024-01-15T10:00:00Z"
+
+tags:
+  - name: Plans
+    description: eSIM plan management
+  - name: Orders
+    description: Order processing
+  - name: System
+    description: System endpoints
