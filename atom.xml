@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>eSIM Myanmar - Latest Updates</title>
+  <subtitle>Stay updated with new eSIM plans and mobile data offers in Myanmar</subtitle>
+  <link href="https://esim-myanmar.com/atom.xml" rel="self"/>
+  <link href="https://esim-myanmar.com/"/>
+  <id>https://esim-myanmar.com/</id>
+  <updated>2024-01-15T10:00:00Z</updated>
+  <author>
+    <name>eSIM Myanmar</name>
+    <email>info@esim-myanmar.com</email>
+  </author>
+  <generator>eSIM Myanmar Feed Generator</generator>
+  <icon>https://esim-myanmar.com/favicon.ico</icon>
+  <logo>https://esim-myanmar.com/logo.png</logo>
+  
+  <!-- Sample Entry - New eSIM Plan -->
+  <entry>
+    <title>New 7-Day Unlimited eSIM Plan Now Available</title>
+    <link href="https://esim-myanmar.com/blog/new-7day-unlimited-plan"/>
+    <id>https://esim-myanmar.com/blog/new-7day-unlimited-plan</id>
+    <updated>2024-01-15T10:00:00Z</updated>
+    <published>2024-01-15T10:00:00Z</published>
+    <summary>Introducing our new 7-day unlimited data eSIM plan perfect for travelers visiting Myanmar. Get unlimited high-speed data with nationwide coverage.</summary>
+    <content type="html"><![CDATA[
+      <p>We're excited to announce our new 7-day unlimited eSIM plan, designed specifically for travelers who need reliable, high-speed internet throughout Myanmar.</p>
+      <h3>Plan Features:</h3>
+      <ul>
+        <li>Unlimited high-speed data for 7 days</li>
+        <li>Nationwide 4G/5G coverage</li>
+        <li>Instant activation via QR code</li>
+        <li>No roaming charges</li>
+        <li>24/7 customer support</li>
+      </ul>
+      <p><strong>Price:</strong> $25 USD</p>
+      <p><a href="https://esim-myanmar.com/plans/7day-unlimited">Get this plan now</a></p>
+    ]]></content>
+    <category term="eSIM Plans"/>
+    <category term="Travel"/>
+  </entry>
+  
+</feed>

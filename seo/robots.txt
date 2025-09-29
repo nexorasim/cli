@@ -1,0 +1,86 @@
+# eSIM Myanmar - Robots.txt
+# Optimized for SEO and crawl efficiency
+
+User-agent: *
+Allow: /
+
+# Prioritize important content
+Allow: /plans
+Allow: /blog
+Allow: /support
+Allow: /my/*
+
+# Block unnecessary crawling
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /cache/
+Disallow: /_next/
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /test/
+Disallow: /dev/
+
+# Block common spam/attack vectors
+Disallow: /wp-admin/
+Disallow: /wp-content/
+Disallow: /wp-includes/
+Disallow: /phpMyAdmin/
+Disallow: /cgi-bin/
+
+# Block search and filter parameters to avoid duplicate content
+Disallow: /*?*utm_*
+Disallow: /*?*ref=*
+Disallow: /*?*sort=*
+Disallow: /*?*filter=*
+Disallow: /*?*search=*
+
+# Allow Google and Bing to crawl JS and CSS
+User-agent: Googlebot
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.gif
+Allow: *.svg
+Allow: *.webp
+
+User-agent: Bingbot
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.gif
+Allow: *.svg
+Allow: *.webp
+
+# Block aggressive crawlers
+User-agent: CCBot
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# Crawl delay for other bots (prevent overloading)
+User-agent: *
+Crawl-delay: 1
+
+# Sitemaps location
+Sitemap: https://esim-myanmar.com/sitemap.xml
+Sitemap: https://esim-myanmar.com/sitemap-news.xml
+Sitemap: https://esim-myanmar.com/rss.xml
+
+# Host directive (helps with canonicalization)
+Host: esim-myanmar.com

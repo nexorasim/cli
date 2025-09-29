@@ -1,0 +1,265 @@
+/* =============================================
+   ESIM MYANMAR DESIGN TOKENS
+   Supporting Burmese (Myanmar) + English
+============================================= */
+
+:root {
+  /* === TYPOGRAPHY SCALE === */
+  /* Base font sizes optimized for Myanmar script readability */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px - Base size */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+  --font-size-6xl: 3.75rem;   /* 60px */
+
+  /* Line heights optimized for Myanmar script */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* Font families */
+  --font-family-myanmar: 'Noto Sans Myanmar', 'Myanmar Text', 'Pyidaungsu', sans-serif;
+  --font-family-english: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+
+  /* Font weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* === SPACING SCALE === */
+  --spacing-0: 0;
+  --spacing-px: 1px;
+  --spacing-0-5: 0.125rem;  /* 2px */
+  --spacing-1: 0.25rem;     /* 4px */
+  --spacing-1-5: 0.375rem;  /* 6px */
+  --spacing-2: 0.5rem;      /* 8px */
+  --spacing-2-5: 0.625rem;  /* 10px */
+  --spacing-3: 0.75rem;     /* 12px */
+  --spacing-3-5: 0.875rem;  /* 14px */
+  --spacing-4: 1rem;        /* 16px */
+  --spacing-5: 1.25rem;     /* 20px */
+  --spacing-6: 1.5rem;      /* 24px */
+  --spacing-7: 1.75rem;     /* 28px */
+  --spacing-8: 2rem;        /* 32px */
+  --spacing-10: 2.5rem;     /* 40px */
+  --spacing-12: 3rem;       /* 48px */
+  --spacing-16: 4rem;       /* 64px */
+  --spacing-20: 5rem;       /* 80px */
+  --spacing-24: 6rem;       /* 96px */
+
+  /* === BUTTON SIZES === */
+  /* Small buttons */
+  --btn-sm-height: 2rem;       /* 32px */
+  --btn-sm-padding-x: 0.75rem; /* 12px */
+  --btn-sm-padding-y: 0.375rem; /* 6px */
+  --btn-sm-font-size: var(--font-size-sm);
+  --btn-sm-border-radius: 0.25rem; /* 4px */
+
+  /* Medium buttons (default) */
+  --btn-md-height: 2.5rem;     /* 40px */
+  --btn-md-padding-x: 1rem;    /* 16px */
+  --btn-md-padding-y: 0.5rem;  /* 8px */
+  --btn-md-font-size: var(--font-size-base);
+  --btn-md-border-radius: 0.375rem; /* 6px */
+
+  /* Large buttons */
+  --btn-lg-height: 3rem;       /* 48px */
+  --btn-lg-padding-x: 1.5rem;  /* 24px */
+  --btn-lg-padding-y: 0.75rem; /* 12px */
+  --btn-lg-font-size: var(--font-size-lg);
+  --btn-lg-border-radius: 0.5rem; /* 8px */
+
+  /* Extra large buttons */
+  --btn-xl-height: 3.5rem;     /* 56px */
+  --btn-xl-padding-x: 2rem;    /* 32px */
+  --btn-xl-padding-y: 1rem;    /* 16px */
+  --btn-xl-font-size: var(--font-size-xl);
+  --btn-xl-border-radius: 0.75rem; /* 12px */
+
+  /* === TOUCH TARGETS === */
+  --touch-target-min: 44px;    /* WCAG AA minimum */
+  --touch-target-comfortable: 48px; /* Recommended */
+  --touch-target-large: 56px;  /* For primary actions */
+
+  /* === COLORS === */
+  /* Brand colors for Myanmar eSIM */
+  --color-primary: #E53E3E;     /* Red - Myanmar flag inspired */
+  --color-primary-50: #FEF2F2;
+  --color-primary-100: #FEE2E2;
+  --color-primary-200: #FECACA;
+  --color-primary-300: #FCA5A5;
+  --color-primary-400: #F87171;
+  --color-primary-500: #EF4444;
+  --color-primary-600: #DC2626;
+  --color-primary-700: #B91C1C;
+  --color-primary-800: #991B1B;
+  --color-primary-900: #7F1D1D;
+
+  --color-secondary: #F59E0B;   /* Amber - Golden pagoda inspired */
+  --color-secondary-50: #FFFBEB;
+  --color-secondary-100: #FEF3C7;
+  --color-secondary-200: #FDE68A;
+  --color-secondary-300: #FCD34D;
+  --color-secondary-400: #FBBF24;
+  --color-secondary-500: #F59E0B;
+  --color-secondary-600: #D97706;
+  --color-secondary-700: #B45309;
+  --color-secondary-800: #92400E;
+  --color-secondary-900: #78350F;
+
+  /* Neutral colors */
+  --color-gray-50: #F9FAFB;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E5E7EB;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1F2937;
+  --color-gray-900: #111827;
+
+  /* Semantic colors */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+
+  /* === BORDER RADIUS === */
+  --radius-none: 0;
+  --radius-sm: 0.125rem;   /* 2px */
+  --radius-base: 0.25rem;  /* 4px */
+  --radius-md: 0.375rem;   /* 6px */
+  --radius-lg: 0.5rem;     /* 8px */
+  --radius-xl: 0.75rem;    /* 12px */
+  --radius-2xl: 1rem;      /* 16px */
+  --radius-3xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;
+
+  /* === SHADOWS === */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* === Z-INDEX SCALE === */
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+}
+
+/* === RESPONSIVE BREAKPOINTS === */
+/* Mobile first approach */
+@media (min-width: 640px) {
+  :root {
+    --container-padding: var(--spacing-6);
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --container-padding: var(--spacing-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: var(--spacing-10);
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --container-padding: var(--spacing-12);
+  }
+}
+
+/* === TYPOGRAPHY CLASSES === */
+.text-myanmar {
+  font-family: var(--font-family-myanmar);
+}
+
+.text-english {
+  font-family: var(--font-family-english);
+}
+
+/* Enhanced line-height for Myanmar text */
+.text-myanmar p,
+.text-myanmar .paragraph {
+  line-height: var(--line-height-relaxed);
+}
+
+/* Button component classes using design tokens */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-weight: var(--font-weight-medium);
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  min-height: var(--touch-target-min);
+}
+
+.btn-sm {
+  height: var(--btn-sm-height);
+  padding: var(--btn-sm-padding-y) var(--btn-sm-padding-x);
+  font-size: var(--btn-sm-font-size);
+  border-radius: var(--btn-sm-border-radius);
+}
+
+.btn-md {
+  height: var(--btn-md-height);
+  padding: var(--btn-md-padding-y) var(--btn-md-padding-x);
+  font-size: var(--btn-md-font-size);
+  border-radius: var(--btn-md-border-radius);
+}
+
+.btn-lg {
+  height: var(--btn-lg-height);
+  padding: var(--btn-lg-padding-y) var(--btn-lg-padding-x);
+  font-size: var(--btn-lg-font-size);
+  border-radius: var(--btn-lg-border-radius);
+}
+
+.btn-xl {
+  height: var(--btn-xl-height);
+  padding: var(--btn-xl-padding-y) var(--btn-xl-padding-x);
+  font-size: var(--btn-xl-font-size);
+  border-radius: var(--btn-xl-border-radius);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-600);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-600);
+}
