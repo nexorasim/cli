@@ -1,60 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <!-- Homepage -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://esim-myanmar.com/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://esim-myanmar.com/"/>
-    <xhtml:link rel="alternate" hreflang="my" href="https://esim-myanmar.com/my/"/>
+    <loc>https://www.esim.com.mm/</loc>
     <lastmod>2024-01-15T10:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Store -->
   <url>
-    <loc>https://esim-myanmar.com/store</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://esim-myanmar.com/store"/>
-    <xhtml:link rel="alternate" hreflang="my" href="https://esim-myanmar.com/my/store"/>
+    <loc>https://www.esim.com.mm/services/</loc>
     <lastmod>2024-01-15T10:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  
-  <!-- Product Pages (Template) -->
   <url>
-    <loc>https://esim-myanmar.com/plans/daily-1gb</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://esim-myanmar.com/plans/daily-1gb"/>
-    <xhtml:link rel="alternate" hreflang="my" href="https://esim-myanmar.com/my/plans/daily-1gb"/>
+    <loc>https://www.esim.com.mm/packages/</loc>
+    <lastmod>2024-01-15T10:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.esim.com.mm/compatibility/</loc>
     <lastmod>2024-01-15T10:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
-  <!-- Blog -->
   <url>
-    <loc>https://esim-myanmar.com/blog</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://esim-myanmar.com/blog"/>
-    <xhtml:link rel="alternate" hreflang="my" href="https://esim-myanmar.com/my/blog"/>
+    <loc>https://www.esim.com.mm/guide/</loc>
     <lastmod>2024-01-15T10:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.esim.com.mm/faq/</loc>
+    <lastmod>2024-01-15T10:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
-  <!-- Support Pages -->
   <url>
-    <loc>https://esim-myanmar.com/support</loc>
+    <loc>https://www.esim.com.mm/about/</loc>
     <lastmod>2024-01-15T10:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
   <url>
-    <loc>https://esim-myanmar.com/about</loc>
+    <loc>https://www.esim.com.mm/contact/</loc>
     <lastmod>2024-01-15T10:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.6</priority>
   </url>
-  
+  <url>
+    <loc>https://www.esim.com.mm/blog/</loc>
+    <lastmod>2024-01-15T10:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.esim.com.mm/portal/</loc>
+    <lastmod>2024-01-15T10:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.esim.com.mm/legal/terms/</loc>
+    <lastmod>2024-01-15T10:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.esim.com.mm/legal/privacy/</loc>
+    <lastmod>2024-01-15T10:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>

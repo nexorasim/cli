@@ -4,30 +4,23 @@ Allow: /
 # Block admin and private areas
 Disallow: /admin/
 Disallow: /api/private/
+Disallow: /portal/dashboard/
+Disallow: /portal/invoices/
 Disallow: /checkout/
-Disallow: /account/
 Disallow: /*.json$
-Disallow: /*?*utm_*
-Disallow: /*?*fbclid*
-Disallow: /*?*gclid*
 
 # Allow important resources
 Allow: /api/public/
+Allow: /api/packages
+Allow: /api/health
 Allow: /assets/
 Allow: /images/
 Allow: /*.css
 Allow: /*.js
 
-# Crawl delay for respectful crawling
+# Crawl delay
 Crawl-delay: 1
 
 # Sitemaps
-Sitemap: https://esim-myanmar.com/sitemap.xml
-Sitemap: https://esim-myanmar.com/sitemap-news.xml
-
-# Block specific bots if needed
-User-agent: AhrefsBot
-Crawl-delay: 10
-
-User-agent: SemrushBot
-Crawl-delay: 10
+Sitemap: https://www.esim.com.mm/sitemap.xml
+Sitemap: https://www.esim.com.mm/rss.xml

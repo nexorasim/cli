@@ -1,42 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>eSIM Myanmar - Latest Updates</title>
-    <description>Stay updated with new eSIM plans and mobile data offers in Myanmar</description>
-    <link>https://esim-myanmar.com/</link>
-    <atom:link href="https://esim-myanmar.com/rss.xml" rel="self" type="application/rss+xml"/>
+    <title>eSIM Myanmar - ESIM MYANMAR COMPANY LIMITED</title>
+    <description>Latest eSIM plans, mobile data offers, and connectivity solutions in Myanmar</description>
+    <link>https://www.esim.com.mm/</link>
+    <atom:link href="https://www.esim.com.mm/rss.xml" rel="self" type="application/rss+xml"/>
     <language>en-US</language>
     <lastBuildDate>Mon, 15 Jan 2024 10:00:00 +0000</lastBuildDate>
     <pubDate>Mon, 15 Jan 2024 10:00:00 +0000</pubDate>
     <ttl>60</ttl>
+    <managingEditor>info@esim.com.mm (ESIM MYANMAR COMPANY LIMITED)</managingEditor>
+    <webMaster>info@esim.com.mm (ESIM MYANMAR COMPANY LIMITED)</webMaster>
     <image>
-      <url>https://esim-myanmar.com/logo.png</url>
+      <url>https://www.esim.com.mm/logo.png</url>
       <title>eSIM Myanmar</title>
-      <link>https://esim-myanmar.com/</link>
+      <link>https://www.esim.com.mm/</link>
       <width>144</width>
       <height>144</height>
     </image>
     
-    <!-- Sample Item - New eSIM Plan Release -->
     <item>
-      <title>New 7-Day Unlimited eSIM Plan Now Available</title>
-      <description>Introducing our new 7-day unlimited data eSIM plan perfect for travelers visiting Myanmar. Get unlimited high-speed data with nationwide coverage for just $25 USD.</description>
-      <link>https://esim-myanmar.com/blog/new-7day-unlimited-plan</link>
-      <guid isPermaLink="true">https://esim-myanmar.com/blog/new-7day-unlimited-plan</guid>
+      <title>Tourist eSIM Plan - 7 Days Myanmar Connectivity</title>
+      <description>Perfect for travelers visiting Myanmar. Get 5GB high-speed data with nationwide coverage for just $15 USD. Instant activation and no physical SIM required.</description>
+      <link>https://www.esim.com.mm/packages/tourist-7d</link>
+      <guid isPermaLink="true">https://www.esim.com.mm/packages/tourist-7d</guid>
       <pubDate>Mon, 15 Jan 2024 10:00:00 +0000</pubDate>
       <category>eSIM Plans</category>
       <category>Travel</category>
-      <enclosure url="https://esim-myanmar.com/images/7day-plan-banner.jpg" length="245760" type="image/jpeg"/>
     </item>
     
     <item>
-      <title>How to Install eSIM on iPhone - Step by Step Guide</title>
-      <description>Complete guide on installing and activating your eSIM on iPhone devices. Includes troubleshooting tips and compatibility information.</description>
-      <link>https://esim-myanmar.com/blog/install-esim-iphone-guide</link>
-      <guid isPermaLink="true">https://esim-myanmar.com/blog/install-esim-iphone-guide</guid>
-      <pubDate>Wed, 10 Jan 2024 14:30:00 +0000</pubDate>
-      <category>Guides</category>
-      <category>iPhone</category>
+      <title>Business eSIM Plan - 30 Days Premium Connectivity</title>
+      <description>Designed for business travelers and professionals. 20GB premium network access with 24/7 support for $35 USD per month.</description>
+      <link>https://www.esim.com.mm/packages/business-30d</link>
+      <guid isPermaLink="true">https://www.esim.com.mm/packages/business-30d</guid>
+      <pubDate>Mon, 15 Jan 2024 10:00:00 +0000</pubDate>
+      <category>eSIM Plans</category>
+      <category>Business</category>
+    </item>
+    
+    <item>
+      <title>Extended Stay eSIM - 90 Days Best Value</title>
+      <description>Long-term connectivity solution with 50GB data allowance. Renewable plan offering the best value at $85 USD for 90 days.</description>
+      <link>https://www.esim.com.mm/packages/extended-90d</link>
+      <guid isPermaLink="true">https://www.esim.com.mm/packages/extended-90d</guid>
+      <pubDate>Mon, 15 Jan 2024 10:00:00 +0000</pubDate>
+      <category>eSIM Plans</category>
+      <category>Long Term</category>
     </item>
     
   </channel>
