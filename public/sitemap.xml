@@ -5,92 +5,99 @@
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   
   <url>
-    <loc>https://esim.com.mm/</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/buy-esim</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://esim.com.mm/</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.esim.com.mm/buy-esim</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/about</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/about</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/compatibility</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/compatibility</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/how-it-works</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/how-it-works</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/what-is-esim</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/what-is-esim</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/help-center</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/help-center</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/contact</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/contact</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/partners</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/partners</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/blog</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/blog</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/privacy-policy</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/privacy-policy</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/terms-of-service</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/terms-of-service</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   
   <url>
-    <loc>https://esim.com.mm/refund-policy</loc>
-    <lastmod>2025-01-09</lastmod>
+    <loc>https://www.esim.com.mm/refund-policy</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

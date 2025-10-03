@@ -172,6 +172,14 @@ const Contact: React.FC = () => {
                                 </div>
                                 <span className="text-white group-hover:text-cyan-400 transition-colors">{BRAND_INFO.phone}</span>
                             </a>
+                            <div className="flex items-start text-lg">
+                                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mr-4">
+                                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <span className="text-white">{BRAND_INFO.address}</span>
+                            </div>
                         </div>
                     </GlassCard>
                     

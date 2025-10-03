@@ -60,9 +60,11 @@ const Footer: React.FC = () => {
                             <SocialLink href={BRAND_INFO.social.youtube} label="YouTube"><YouTubeIcon /></SocialLink>
                             <SocialLink href={BRAND_INFO.social.tiktok} label="TikTok"><TikTokIcon /></SocialLink>
                         </div>
-                         <div className="mt-6 text-sm text-gray-400">
+                         <div className="mt-6 text-sm text-gray-400 space-y-1">
+                            <p>{BRAND_INFO.fullName}</p>
                             <p>{BRAND_INFO.email}</p>
                             <p>{BRAND_INFO.phone}</p>
+                            <p className="leading-relaxed">{BRAND_INFO.address}</p>
                         </div>
                     </div>
                 </div>
