@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provisioning
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: provisioning
+  template:
+    metadata:
+      labels:
+        app: provisioning
+    spec:
+      containers:
+        - name: provisioning
+          image: ${IMAGE:-nexorasim/provisioning:latest}
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10

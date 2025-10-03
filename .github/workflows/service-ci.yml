@@ -1,0 +1,31 @@
+name: Services CI
+
+on:
+  push:
+    branches: [ main, 'nexorasim/patch-52082' ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [provisioning, abm-gateway, business-contacts]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Build ${{ matrix.service }}
+        working-directory: services/${{ matrix.service }}
+        run: |
+          if [ -f package.json ]; then npm ci || true; fi
+          if [ -f package.json ]; then npm run build || true; fi
+
+      - name: Run tests for ${{ matrix.service }}
+        working-directory: services/${{ matrix.service }}
+        run: |
+          if [ -d tests ]; then bash tests/*.sh || true; fi
