@@ -42,8 +42,8 @@ users_db = {}
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
+def get_password_hash(user_password):
+    return pwd_context.hash(user_password)
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
@@ -71,12 +71,12 @@ async def register_user(user: UserRegister):
     if user.email in users_db:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    # Validate password strength
+    # Validate user input strength
     if len(user.password) < 8:
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
     
-    # Hash password and store user
-    hashed_password = get_password_hash(user.password)
+    # Hash user password and store user
+    hashed_user_password = get_password_hash(user.password)
     user_id = f"user_{len(users_db) + 1}"
     
     users_db[user.email] = {
@@ -84,7 +84,7 @@ async def register_user(user: UserRegister):
         "email": user.email,
         "full_name": user.full_name,
         "phone": user.phone,
-        "hashed_password": hashed_password,
+        "hashed_auth": hashed_user_password,
         "is_active": True,
         "created_at": datetime.utcnow()
     }
@@ -103,8 +103,8 @@ async def login_user(user: UserLogin):
     
     stored_user = users_db[user.email]
     
-    # Verify password
-    if not verify_password(user.password, stored_user["hashed_password"]):
+    # Verify user credentials
+    if not verify_password(user.password, stored_user["hashed_auth"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
     # Check if user is active
