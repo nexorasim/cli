@@ -1,0 +1,76 @@
+{
+  "esim_packages": [
+    {
+      "id": "tourist-7d",
+      "name": "Tourist Plan",
+      "duration_days": 7,
+      "data_gb": 5,
+      "price_usd": 15,
+      "price_mmk": 31500,
+      "features": [
+        "5GB High-Speed Data",
+        "Nationwide Coverage",
+        "Instant Activation",
+        "QR Code Setup"
+      ],
+      "coverage": "Myanmar Nationwide",
+      "network": "4G/LTE",
+      "validity": "7 days from activation",
+      "device_compatibility": "eSIM compatible devices",
+      "activation_time": "Instant"
+    },
+    {
+      "id": "business-30d",
+      "name": "Business Plan",
+      "duration_days": 30,
+      "data_gb": 20,
+      "price_usd": 35,
+      "price_mmk": 73500,
+      "features": [
+        "20GB High-Speed Data",
+        "Premium Network Access",
+        "24/7 Priority Support",
+        "Business Dashboard"
+      ],
+      "coverage": "Myanmar Nationwide + Premium Zones",
+      "network": "4G/LTE Premium",
+      "validity": "30 days from activation",
+      "device_compatibility": "eSIM compatible devices",
+      "activation_time": "Instant"
+    },
+    {
+      "id": "extended-90d",
+      "name": "Extended Stay",
+      "duration_days": 90,
+      "data_gb": 50,
+      "price_usd": 85,
+      "price_mmk": 178500,
+      "features": [
+        "50GB High-Speed Data",
+        "Renewable Plan",
+        "Best Value Package",
+        "Long-term Connectivity"
+      ],
+      "coverage": "Myanmar Nationwide",
+      "network": "4G/LTE",
+      "validity": "90 days from activation",
+      "device_compatibility": "eSIM compatible devices",
+      "activation_time": "Instant"
+    }
+  ],
+  "last_updated": "2024-10-03T05:30:00Z",
+  "currency_rates": {
+    "USD_to_MMK": 2100,
+    "last_updated": "2024-10-03"
+  },
+  "coverage_areas": [
+    "Yangon",
+    "Mandalay", 
+    "Naypyidaw",
+    "Bagan",
+    "Inle Lake",
+    "Taunggyi",
+    "Mawlamyine",
+    "Pathein"
+  ]
+}
