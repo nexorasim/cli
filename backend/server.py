@@ -5,6 +5,7 @@ from typing import List, Optional
 import uuid
 from datetime import datetime
 import logging
+from auth import router as auth_router
 
 # Create the main app
 app = FastAPI(
@@ -164,8 +165,9 @@ async def topup_esim(activation_id: str, amount_usd: int):
         "transaction_id": str(uuid.uuid4())
     }
 
-# Include the router in the main app
+# Include the routers in the main app
 app.include_router(api_router)
+app.include_router(auth_router, prefix="/api")
 
 # CORS middleware
 app.add_middleware(
